@@ -19,23 +19,16 @@
  */
 
 const PIXI = require('pixi.js');
-// import { TransitionPlugin } from './Transition/TransitionPlugin';
-// import { TransitionFilter } from './Transition/TransitionFilter';
+import Container from './container';
 
 /**
  * Class representing a Layer.
  * @extends PIXI.Graphics
  */
-class Layer extends PIXI.Container {
+class Layer extends Container {
 
-    /**
-     * Create a sprite.
-     * It is a empty sprite, you should specify its content (use {@link Sprite#setFile}, for example)
-     * and call {@link Sprite#execSync}.
-     */
   constructor() {
     super();
-    this.zorder = 0;
 
     this.background = new PIXI.Graphics();
     this.addChild(this.background);
@@ -59,18 +52,6 @@ class Layer extends PIXI.Container {
       fillAlpha: 0,
       anchor: [0, 0]
     });
-  }
-
-    /**
-     * Specify sprite index.
-     * This method do not take effect until {@link Sprite#execSync} is called.
-     * @param {number} index - the id of sprite
-     * @returns {Sprite} - this
-     */
-  setIndex(index) {
-    this.index = index;
-
-    return this;
   }
 
   // 取代下面的通过 setTimeout 进行 hack 的方式，直接 hack `filterArea` 的取值过程
