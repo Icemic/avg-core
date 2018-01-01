@@ -1,5 +1,5 @@
 /**
- * @file        Main export of the AVG.js library
+ * @file        Window component
  * @author      Icemic Jia <bingfeng.web@gmail.com>
  * @copyright   2015-2016 Icemic Jia
  * @link        https://www.avgjs.org
@@ -18,33 +18,14 @@
  * limitations under the License.
  */
 
-import 'babel-polyfill';
-
-/**
- * @namespace AVG
- */
-import * as components from 'components';
-import * as ui from 'components/ui';
-import * as plugins from 'plugins';
-
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import core from 'core/core';
-import { define, connect, getEnv } from './core/data';
-import findPixiNode from './components/findPixiNode';
-import tools from './components/componentUtils';
+import Dialog from './Dialog';
+import Layout from './Layout';
+import Button from './Button';
+import Checkbox from './Checkbox';
 
 export {
-  React,
-  Component,
-  PropTypes,
-  core,
-  components,
-  ui,
-  plugins,
-  findPixiNode,
-  define,
-  connect,
-  getEnv,
-  tools,
-};
+  Dialog,
+  Layout,
+  Button,
+  Checkbox
+}

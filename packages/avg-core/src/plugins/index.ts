@@ -17,9 +17,18 @@
  * limitations under the License.
  */
 
-export Flow from 'plugins/flow';
-export Script from 'plugins/script';
-export localStorage from 'plugins/localStorage';
-export Screenshot from 'plugins/screenshot';
-export Audio from 'plugins/audio';
+import Flow from './flow';
+import Script from './script';
+import localStorage from './localStorage';
+import Screenshot from './screenshot';
+import Audio from './audio';
+
+export {
+  Flow,
+  Script,
+  localStorage,
+  Screenshot,
+  Audio
+}
+
 // export FlexLayout from './flexLayout/flexLayout';
