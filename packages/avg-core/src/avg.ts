@@ -23,9 +23,9 @@ import 'babel-polyfill';
 /**
  * @namespace AVG
  */
-import * as components from './components';
-import * as ui from './components/ui';
-import * as plugins from './plugins';
+// import * as components from './components';
+// import * as ui from './components/ui';
+// import * as plugins from './plugins';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -33,15 +33,17 @@ import core from './core/core';
 import { define, connect, getEnv } from './core/data';
 import findPixiNode from './components/findPixiNode';
 import tools from './components/componentUtils';
+import { Surface } from './components/Surface';
 
 export {
   React,
   Component,
   PropTypes,
   core,
-  components,
-  ui,
-  plugins,
+  Surface,
+  // components,
+  // ui,
+  // plugins,
   findPixiNode,
   define,
   connect,

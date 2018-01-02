@@ -5,10 +5,14 @@
     "allowJs": true,
     "jsx": "preserve",
     "module": "esnext",
+    "lib": [
+      "dom", "es5", "es2015", "es6", "es7", "esnext"
+    ],
     "strict": true,
     "sourceMap": true,
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "locale": "en"
   },
   "include": [
     "src/**/*"
