@@ -274,10 +274,10 @@ class Core extends EventEmitter {
       assetsPath += '/';
     }
     this.assetsPath = <string>assetsPath;
-    preloaderInit(assetsPath, _options.tryWebp);
+    preloaderInit(<string>assetsPath, <boolean>_options.tryWebp);
 
     this.stage = new PIXI.Container();
-    attachToSprite(this.stage);
+    attachToSprite(<PIXI.DisplayObject>this.stage);
     // this.stage._ontap = e => this.post('tap', e);
     // this.stage._onclick = e => this.post('click', e);
     (<any>this.stage)._ontap = (e: Event) => core.setClickEvent(e);

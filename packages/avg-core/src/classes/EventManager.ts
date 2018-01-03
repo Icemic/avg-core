@@ -18,7 +18,10 @@
  * limitations under the License.
  */
 
-export function attachToSprite(sprite) {
+import * as PIXI from 'pixi.js';
+import { MouseEvent } from 'react';
+
+export function attachToSprite(sprite: PIXI.DisplayObject) {
   sprite.interactive = true;
   sprite.on('click', handleEvent);
   sprite.on('tap', handleEvent);
@@ -34,45 +37,50 @@ export function attachToSprite(sprite) {
   sprite.on('touchendoutside', handleEvent);
 
   sprite.on('pointerover', pointerHandler);
-  sprite.on('pointerenter', pointerHandler);
+  // sprite.on('pointerenter', pointerHandler);
   sprite.on('pointerdown', pointerHandler);
   sprite.on('pointermove', pointerHandler);
   sprite.on('pointerup', pointerHandler);
   sprite.on('pointerupoutside', pointerHandler);
   sprite.on('pointercancel', pointerHandler);
   sprite.on('pointerout', pointerHandler);
-  sprite.on('pointerleave', pointerHandler);
+  // sprite.on('pointerleave', pointerHandler);
   sprite.on('pointertap', pointerHandler);
 }
 
 class EventData {
-  constructor(evt) {
+  public type: string
+  public originalEvent: PIXI.interaction.InteractionEvent
+  public target: PIXI.DisplayObject
+  public currentTarget: PIXI.DisplayObject
+  public global: PIXI.Point
+  public local?: PIXI.Point
+  public movement?: { x: number, y: number }
+  private _preventDefault: boolean
+  constructor(evt: PIXI.interaction.InteractionEvent) {
     this.type = evt.type;
     this._preventDefault = false;
     this.originalEvent = evt;
     // this.index = evt.target.index;
     this.target = evt.target;
     this.currentTarget = evt.currentTarget;
-    this.global = {
-      x: evt.data.global.x,
-      y: evt.data.global.y,
-    };
-    this.local = evt.currentTarget ? evt.currentTarget.toLocal(this.global) : null;
+    this.global = evt.data.global;
+    this.local = evt.currentTarget ? evt.currentTarget.toLocal(this.global) : undefined;
 
     // 有时候会有奇怪的触发，导致 data.originalEvent 是 null……
     if (evt.data.originalEvent) {
       this.movement = {
-        x: evt.data.originalEvent.movementX,
-        y: evt.data.originalEvent.movementY,
+        x: (<any>evt.data.originalEvent).movementX,
+        y: (<any>evt.data.originalEvent).movementY,
       };
     } else {
       this.movement = { x: 0, y: 0 };
     }
   }
-  preventDefault() {
+  public preventDefault() {
     this._preventDefault = true;
   }
-  stopPropagation() {
+  public stopPropagation() {
     this.originalEvent.stopped = true;
   }
 }
@@ -86,17 +94,17 @@ class EventData {
 //   }
 // }
 
-function handleEvent(evt) {
+function handleEvent(evt: PIXI.interaction.InteractionEvent) {
   const e = new EventData(evt);
-  const handler = e.currentTarget ? e.currentTarget[`_on${e.type}`] : null;
+  const handler = e.currentTarget ? (<any>e.currentTarget)[`_on${e.type}`] : null;
 
   handler && handler(e);
 }
 
-function pointerHandler(evt) {
+function pointerHandler(evt: PIXI.interaction.InteractionEvent) {
   const e = new EventData(evt);
   // console.log(e.type)
-  const defaultHandler = e.currentTarget ? e.currentTarget[`_on${e.type}`] : null;
+  const defaultHandler = e.currentTarget ? (<any>e.currentTarget)[`_on${e.type}`] : null;
 
   defaultHandler && defaultHandler(e);
 }

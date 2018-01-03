@@ -18,11 +18,15 @@
  * limitations under the License.
  */
 
-const PIXI = require('pixi.js');
+import * as PIXI from 'pixi.js';
 
-let TEXTURES = {};
-const AUDIOS = {};
-const VIDEOS = {};
+interface TextureMap {
+  [path: string]: PIXI.Texture
+}
+
+let TEXTURES: TextureMap = {};
+const AUDIOS: any = {};
+const VIDEOS: any = {};
 // const SCRIPTS = {};
 let HOST = '/';
 let TRYWEBP = false;
@@ -48,19 +52,19 @@ Resource.setExtensionXhrType('bks', Resource.XHR_RESPONSE_TYPE.TEXT);
 Resource.setExtensionXhrType('ttf', Resource.XHR_RESPONSE_TYPE.BUFFER);
 Resource.setExtensionXhrType('otf', Resource.XHR_RESPONSE_TYPE.BUFFER);
 
-function changeExtension(filename, ext) {
+function changeExtension(filename: string, ext: string) {
   const basename = filename.substr(0, filename.lastIndexOf('.'));
 
   return `${basename}.${ext}`;
 }
 
-export function init(host, tryWebp) {
+export function init(host: string, tryWebp: boolean) {
   TEXTURES = {};
   HOST = host || HOST;
   TRYWEBP = !!tryWebp;
 }
 
-export function load(resources, onProgress) {
+export function load(resources: Array<string>, onProgress: (...args: any[]) => any) {
   const loader = new PIXI.loaders.Loader(HOST);
 
   if (resources && resources.length) {
@@ -78,7 +82,7 @@ export function load(resources, onProgress) {
       loader.on('progress', onProgress);
     });
 
-    loader.load((loader, resources) => {
+    loader.load((loader: PIXI.loaders.Loader, resources: any) => {
       // `resources` is a Object
       for (const name in resources) {
         const res = resources[name];
@@ -135,7 +139,7 @@ export function getTexture(url = '') {
   return new PIXI.Texture(obj.baseTexture);
 }
 
-export function getAudio(url) {
+export function getAudio(url: string) {
   const obj = AUDIOS[url];
 
   if (obj) {

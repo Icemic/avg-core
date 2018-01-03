@@ -96,6 +96,12 @@ module.exports = function (env) {
           // exclude: /node_modules\/(?!(koa-compose|avg-.*|pixi-richtext|huozi))/,
           include: /src\//,
           use: [{
+            loader: 'babel-loader',
+            query: {
+              compact: true,
+              cacheDirectory: true
+            }
+          }, {
             loader: 'ts-loader',
             options: {
             }

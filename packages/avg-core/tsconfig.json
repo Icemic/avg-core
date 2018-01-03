@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "esnext",
     "experimentalDecorators": true,
     "allowJs": true,
     "jsx": "preserve",

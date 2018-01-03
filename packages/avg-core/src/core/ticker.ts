@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-const PIXI = require('pixi.js');
+import * as PIXI from 'pixi.js';
 
 const settings = PIXI.settings;
 
@@ -30,12 +30,13 @@ const settings = PIXI.settings;
  * @extends {PIXI.ticker.Ticker}
  */
 export default class Ticker extends PIXI.ticker.Ticker {
-  constructor(...args) {
+  elapsedTime: number
+  constructor(...args: any[]) {
     super(...args);
 
     this.elapsedTime = 0;
 
-    this.add(dt => {
+    this.add((dt: number) => {
       this.elapsedTime += dt / settings.TARGET_FPMS;
     });
   }
