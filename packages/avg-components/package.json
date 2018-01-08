@@ -4,8 +4,8 @@
   "description": "Official Component for AVG.js",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "webpack-dev-server --config webpack.config.dev.js --progress --colors --devtool source-map --host 0.0.0.0 --disableHostCheck=true --inline --hot --open",
-    "dist": "webpack --env.release && webpack --env.release --env.minimize",
+    "dev": "NODE_ENV=development webpack-dev-server --config webpack.config.dev.js --progress --colors --devtool source-map --host 0.0.0.0 --disableHostCheck=true --inline --hot --open",
+    "dist": "NODE_ENV=production webpack --env.release && webpack --env.release --env.minimize",
     "prepublish": "npm run dist",
     "test": "mocha --compilers js:babel-core/register"
   },

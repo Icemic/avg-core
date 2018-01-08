@@ -3,6 +3,5 @@
 		"lerna": "^2.4.0"
 	},
 	"dependencies": {
-		"pixi-richtext": "^1.0.13"
 	}
 }
