@@ -19,9 +19,9 @@
  */
 
 /* eslint-disable */
-import core from 'core/core';
+import Logger from '../core/logger';
 
-const logger = core.getLogger('ColorUtil');
+const logger = Logger.create('ColorUtil');
 
 export default class Color {
   constructor(value) {

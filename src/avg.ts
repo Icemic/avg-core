@@ -30,7 +30,10 @@ import 'babel-polyfill';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import core from './core/core';
-import { define, connect, getEnv } from './core/data';
+import { reaction } from 'mobx';
+import { observer } from 'mobx-react/custom';
+import { flow } from 'mobx-state-tree';
+import { define, connect, getEnv, stateTree } from './core/data';
 import findPixiNode from './components/findPixiNode';
 import tools from './components/componentUtils';
 import { Surface } from './components/Surface';
@@ -44,9 +47,13 @@ export {
   // components,
   // ui,
   // plugins,
+  stateTree,
   findPixiNode,
   define,
   connect,
   getEnv,
   tools,
+  observer,
+  reaction,
+  flow
 };

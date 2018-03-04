@@ -25,6 +25,7 @@ import { render as renderReact } from 'react-dom';
 import { attachToSprite } from '../classes/EventManager';
 import sayHello from '../utils/sayHello';
 import fitWindow from '../utils/fitWindow';
+import Color from 'color';
 import Logger from './logger';
 import { EventEmitter } from 'eventemitter3';
 
@@ -44,7 +45,8 @@ interface Options {
   view?: HTMLDocument
   fitWindow?: boolean
   assetsPath?: string
-  tryWebp?: boolean
+  tryWebp?: boolean,
+  backgroundColor?: string
 }
 
 /**
@@ -227,10 +229,11 @@ class Core extends EventEmitter {
       fitWindow: false,
       assetsPath: '/',
       tryWebp: false,
+      backgroundColor: '#ffffff',
       ...options,
     };
 
-    const core = this.data.core;
+    const core = this.data;
 
     core.setScreenSize(width, height);
 
@@ -254,6 +257,7 @@ class Core extends EventEmitter {
       this.renderer = new PIXI.WebGLRenderer(width, height, {
         view: _options.view,
         autoResize: true,
+        backgroundColor: Color(_options.backgroundColor).rgbNumber(),
         // resolution: 2,
         roundPixels: true,
       });
@@ -324,7 +328,7 @@ class Core extends EventEmitter {
 
   // TODO: move to actions
   async loadAssets(list: Array<string>) {
-    const core = this.data.core;
+    const core = this.data;
     core.setAssetsLoading(true);
     await loadResources(list, (e: any) => core.setAssetsLoadingProgress(e.progress));
     core.setAssetsLoading(false);

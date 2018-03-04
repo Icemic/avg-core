@@ -1,8 +1,7 @@
 /**
- * @file        Particle system module
+ * @file        Main export of the AVG core components
  * @author      Icemic Jia <bingfeng.web@gmail.com>
- * @copyright   2015-2017 Icemic Jia
- * @link        https://www.avgjs.org
+ * @copyright   2015-2016 Icemic Jia
  * @license     Apache License 2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,4 +17,20 @@
  * limitations under the License.
  */
 
-export { Particle } from './Particle';
+export * from './Surface';
+// export * from './Image';
+// export * from './Text';
+// export * from './Container';
+// export * from './Layer';
+// export * from './Textwindow';
+// export * from './BGImage';
+// export * from './FGImage';
+// export * from './transition';
+// export * from './tween';
+// export * from './particle';
+
+// export * from './base/RichText';
+// export * from './base/Image';
+// export * from './base/Container';
+// export * from './base/Layer';
+export * from './router';
