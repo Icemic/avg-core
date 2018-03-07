@@ -1,7 +1,8 @@
 /**
- * @file        Main export of the AVG core plugins
+ * @file        Window component
  * @author      Icemic Jia <bingfeng.web@gmail.com>
  * @copyright   2015-2016 Icemic Jia
+ * @link        https://www.avgjs.org
  * @license     Apache License 2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +18,14 @@
  * limitations under the License.
  */
 
-export Flow from 'plugins/flow';
-export script from 'plugins/script';
-export localStorage from 'plugins/localStorage';
-export Screenshot from 'plugins/screenshot';
-export Audio from 'plugins/audio';
+import Dialog from './Dialog';
+import Layout from './Layout';
+import Button from './Button';
+import Checkbox from './Checkbox';
+
+export {
+  Dialog,
+  Layout,
+  Button,
+  Checkbox
+}

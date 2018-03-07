@@ -19,44 +19,30 @@
  */
 
 import core from 'core/core';
+import { define, connect } from 'core/data';
 
-class Flow {
-  constructor() {
-    this.initialed = false;
-
-    core.use('flow-init', this.init.bind(this));
-  }
-  async init() {
-    if (!this.initialed) {
-      core.use('script-exec', this.exec.bind(this));
-      this.initialed = true;
-    }
-  }
-
-  /**
-  * Supply flow-control commands:
-  *
-  * `wait`: Prevents script execution for some time. ex.`[flow wait time=1000]`
-  *
-  * @method exec
-  * @param  {object}   ctx  middleware context
-  * @param  {Function} next execute next middleware
-  */
-  async exec(ctx, next) {
-    const { command, flags, params } = ctx;
-
-    if (command === 'flow') {
-      if (flags.includes('wait') && !flags.includes('_skip_')) {
-        await new Promise(resolve => {
-          setTimeout(resolve, params.time || 0);
-        });
+@connect({
+  to: 'flow',
+  bind: [{
+    name: 'script',
+    reactions: (self, target) => ({
+      runCommand: {
+        listener: () => self.id,
+        handler: async () => {
+          if (self.command === 'wait') {
+            if (!self.isSkip) {
+              self.setAsync();
+              await new Promise(resolve => {
+                setTimeout(resolve, self.params.time || 0);
+              });
+            }
+            self.next();
+          }
+        }
       }
-    } else {
-      await next();
-    }
-  }
+    })
+  }]
+})
+@define({})
+export default class Flow {
 }
-
-const flow = new Flow();
-
-export default flow;

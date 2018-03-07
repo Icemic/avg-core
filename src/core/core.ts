@@ -19,21 +19,35 @@
  */
 
 import compose from 'koa-compose';
-import FontFaceObserver from 'fontfaceobserver';
+// import FontFaceObserver from 'fontfaceobserver';
 import { render as renderReact } from 'react-dom';
-import Container from 'classes/Container';
-import { attachToSprite } from 'classes/EventManager';
-import sayHello from 'utils/sayHello';
-import fitWindow from 'utils/fitWindow';
+// import Container from '../classes/Container';
+import { attachToSprite } from '../classes/EventManager';
+import sayHello from '../utils/sayHello';
+import fitWindow from '../utils/fitWindow';
+import Color from 'color';
 import Logger from './logger';
+import { EventEmitter } from 'eventemitter3';
 
 import { init as preloaderInit, getTexture, load as loadResources } from './preloader';
 import Ticker from './ticker';
+import { define, connect } from './data';
+
 
 const PIXI = require('pixi.js');
 const isMobile = require('ismobilejs');
 
 const logger = Logger.create('Core');
+
+interface Options {
+  // fontFamily?: string
+  renderer?: PIXI.WebGLRenderer
+  view?: HTMLDocument
+  fitWindow?: boolean
+  assetsPath?: string
+  tryWebp?: boolean,
+  backgroundColor?: string
+}
 
 /**
  * Core of AVG.js, you can start your game development from here.
@@ -41,8 +55,47 @@ const logger = Logger.create('Core');
  * @class
  * @memberof AVG
  */
-class Core {
+@connect({
+  to: 'core'
+})
+@define({
+  model: {
+    width: 1280,
+    height: 720,
+    isAssetsLoading: false,
+    assetsLoadingProgress: 0,
+    clickEvent: {}
+  },
+  actions: self => ({
+    setScreenSize(width: number, height: number) {
+      self.width = width;
+      self.height = height;
+    },
+    setAssetsLoading(value: number) {
+      self.isAssetsLoading = value;
+    },
+    setAssetsLoadingProgress(value: number) {
+      self.assetsLoadingProgress = value;
+    },
+    setClickEvent(e: Event) {
+      self.clickEvent = e;
+    }
+  })
+})
+class Core extends EventEmitter {
+  private _init: boolean
+  private _tickTime: number
+  renderer: PIXI.WebGLRenderer | null
+  stage: PIXI.DisplayObject | null
+  canvas: HTMLCanvasElement | null
+  options: Options
+  private middlewares: { [name: string]: Array<(context: {}, next: () => Promise<any>) => any> }
+  private plugins: { [name: string]: object }
+  private assetsPath: string | null
+  private ticker: Ticker
+  private data: any
   constructor() {
+    super();
 
     /**
      * @type {Boolean}
@@ -77,8 +130,8 @@ class Core {
    * @param {function} middleware instance of middleware
    * @see AVG.core.Middleware
    */
-  use(name, middleware) {
-    let middlewares;
+  use(name: string, middleware: (context: {}, next: () => Promise<any>) => any) {
+    let middlewares: Array<(context: {}, next: () => Promise<any>) => any>;
 
     if (!this.middlewares[name]) {
       middlewares = [];
@@ -96,7 +149,7 @@ class Core {
    * @param {function} middleware instance of middleware
    * @see AVG.core.Middleware
    */
-  unuse(name, middleware) {
+  unuse(name: string, middleware: (context: {}, next: () => Promise<any>) => any) {
     const middlewares = this.middlewares[name];
 
     if (middlewares) {
@@ -120,7 +173,7 @@ class Core {
    * @param {function} next
    * @return {promise}
    */
-  post(name, context, next) {
+  post(name: string, context: object, next: (...args: any[]) => any) {
     const middlewares = this.middlewares[name];
 
     if (middlewares) {
@@ -137,8 +190,22 @@ class Core {
    * 
    * @memberOf Core
    */
-  installPlugin(constructor) {
+  installPlugin(constructor: (new (...args: any[]) => any)) {
     new constructor(this);
+  }
+
+  /**
+   *
+   * install a plugin
+   *
+   * @param {any} name 
+   * @param {any} constructor 
+   * @memberof Core
+   */
+  install(name: string, constructor: (new (...args: any[]) => any)) {
+    const instance = new constructor(this);
+
+    this.plugins[name] = instance;
   }
 
   /**
@@ -154,22 +221,27 @@ class Core {
    * @param {string} [options.assetsPath='assets'] assets path
    * @param {string} [options.tryWebp=false] auto replace image file extension with .webp format when webp is supported by browser
    */
-  async init(width, height, options = {}) {
+  async init(width: number, height: number, options: Options = {}) {
     if (this._init) {
       return;
     }
-    const _options = {
+    const _options: Options = {
       fitWindow: false,
       assetsPath: '/',
       tryWebp: false,
+      backgroundColor: '#ffffff',
       ...options,
     };
 
-    if (_options.fontFamily) {
-      const font = new FontFaceObserver(_options.fontFamily);
+    const core = this.data;
 
-      await font.load();
-    }
+    core.setScreenSize(width, height);
+
+    // if (_options.fontFamily) {
+    //   const font = new FontFaceObserver(_options.fontFamily);
+
+    //   await font.load();
+    // }
 
     if (_options.renderer) {
       this.renderer = _options.renderer;
@@ -185,6 +257,7 @@ class Core {
       this.renderer = new PIXI.WebGLRenderer(width, height, {
         view: _options.view,
         autoResize: true,
+        backgroundColor: Color(_options.backgroundColor).rgbNumber(),
         // resolution: 2,
         roundPixels: true,
       });
@@ -194,23 +267,25 @@ class Core {
 
     if (_options.fitWindow) {
       window.addEventListener('resize', () => {
-        fitWindow(this.renderer, window.innerWidth, window.innerHeight);
+        fitWindow(<PIXI.WebGLRenderer>this.renderer, window.innerWidth, window.innerHeight);
       });
-      fitWindow(this.renderer, window.innerWidth, window.innerHeight);
+      fitWindow(<PIXI.WebGLRenderer>this.renderer, window.innerWidth, window.innerHeight);
     }
 
     let assetsPath = _options.assetsPath;
 
-    if (!assetsPath.endsWith('/')) {
+    if (!(<string>assetsPath).endsWith('/')) {
       assetsPath += '/';
     }
-    this.assetsPath = assetsPath;
-    preloaderInit(assetsPath, _options.tryWebp);
+    this.assetsPath = <string>assetsPath;
+    preloaderInit(<string>assetsPath, <boolean>_options.tryWebp);
 
-    this.stage = new Container();
-    attachToSprite(this.stage);
-    this.stage._ontap = e => this.post('tap', e);
-    this.stage._onclick = e => this.post('click', e);
+    this.stage = new PIXI.Container();
+    attachToSprite(<PIXI.DisplayObject>this.stage);
+    // this.stage._ontap = e => this.post('tap', e);
+    // this.stage._onclick = e => this.post('click', e);
+    (<any>this.stage)._ontap = (e: Event) => core.setClickEvent(e);
+    (<any>this.stage)._onclick = (e: Event) => core.setClickEvent(e);
 
     this.ticker = new Ticker();
     this.ticker.add(this.tick.bind(this));
@@ -237,7 +312,7 @@ class Core {
   getAssetsPath() {
     return this.assetsPath;
   }
-  getTexture(url) {
+  getTexture(url: string) {
     return getTexture(url);
   }
 
@@ -247,13 +322,16 @@ class Core {
    * @param {string} name
    * @return {Logger} logger instance
    */
-  getLogger(name) {
+  getLogger(name: string) {
     return Logger.create(name);
   }
 
-  // TODO: need more elegent code
-  loadAssets(list, onProgress) {
-    return loadResources(list, onProgress);
+  // TODO: move to actions
+  async loadAssets(list: Array<string>) {
+    const core = this.data;
+    core.setAssetsLoading(true);
+    await loadResources(list, (e: any) => core.setAssetsLoadingProgress(e.progress));
+    core.setAssetsLoading(false);
   }
 
   /**
@@ -264,15 +342,15 @@ class Core {
    * @param {boolean} append whether append canvas element to target
    * @return {Promise}
    */
-  async render(component, target, append = true) {
+  async render(component: React.Component, target: HTMLDocument, append = true) {
     if (!this._init) {
       throw Error('not initialed');
     }
 
     return new Promise(resolve => {
-      renderReact(component, target, resolve);
+      renderReact(component, <any>target, <any>resolve);
     }).then(() => {
-      append && target.appendChild(this.renderer.view);
+      append && target.appendChild((<PIXI.WebGLRenderer>this.renderer).view);
     });
   }
 
@@ -288,12 +366,12 @@ class Core {
   /**
    * @private
    */
-  tick(deltaTime) {
+  tick(deltaTime: number) {
     this._tickTime += deltaTime;
     if (this._init && this._tickTime > 0.98) {
-      this.renderer.render(this.stage);
+      (<PIXI.WebGLRenderer>this.renderer).render(<PIXI.DisplayObject>this.stage);
       this._tickTime = 0;
-      window.stats && window.stats.update();
+      (<any>window).stats && (<any>window).stats.update();
     }
   }
 

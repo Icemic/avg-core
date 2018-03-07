@@ -21,7 +21,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import core from 'core/core';
-import { Layer } from '../Layer';
+import { Layer } from '../base/Layer';
 import Scroller from './Scroller';
 import combineProps from 'utils/combineProps';
 import findPixiNode from '../findPixiNode';

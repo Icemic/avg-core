@@ -21,24 +21,21 @@
 import upperFirst from 'lodash/upperFirst';
 
 import React from 'react';
-// import PropTypes from 'prop-types';
 import createComponent from 'components/createComponent';
 import ContainerMixin from 'components/ContainerMixin';
 import NodeMixin from 'components/NodeMixin';
-// import pixiPropTypes from './propTypes';
+import pixiPropTypes from './propTypes';
 
-export default function componentify(name, lifeCycle) {
+export default function componentify(name, lifeCycle, propTypes = {}) {
   const compName = upperFirst(name);
   const Raw = createComponent(`Raw${compName}`, ContainerMixin, NodeMixin, lifeCycle);
 
   class Component extends React.PureComponent {
     static displayName = compName;
-    // static propTypes = {
-    //   file: PropTypes.string,
-    //   dataUri: PropTypes.string,
-    //   rect: PropTypes.arrayOf(PropTypes.number),
-    //   ...pixiPropTypes,
-    // };
+    static propTypes = {
+      ...pixiPropTypes,
+      ...propTypes
+    };
     render() {
       return React.createElement(Raw, this.props, this.props.children);
     }

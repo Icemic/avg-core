@@ -1,5 +1,5 @@
 /**
- * @file        Transition component
+ * @file        Container that provides transition functions
  * @author      Icemic Jia <bingfeng.web@gmail.com>
  * @copyright   2015-2016 Icemic Jia
  * @link        https://www.avgjs.org
@@ -18,28 +18,26 @@
  * limitations under the License.
  */
 
-import createComponent from 'components/createComponent';
-import ContainerMixin from 'components/ContainerMixin';
-import NodeMixin from 'components/NodeMixin';
-import TransitionContainer from './TransitionContainer';
-import { mountNode, updateNode } from '../pixi/properties';
+import * as PIXI from 'pixi.js';
 
-export const Transition = createComponent('Transition', ContainerMixin, NodeMixin, {
+const settings = PIXI.settings;
 
-  createNode() {
-    this.node = new TransitionContainer();
-  },
-  mountNode(props) {
-    const node = this.node;
+/**
+ * Shared Timer
+ *
+ * @export
+ * @class Ticker
+ * @extends {PIXI.ticker.Ticker}
+ */
+export default class Ticker extends PIXI.ticker.Ticker {
+  elapsedTime: number
+  constructor(...args: any[]) {
+    super(...args);
 
-    mountNode(node, props);
+    this.elapsedTime = 0;
 
-    return node;
-  },
-  updateNode(prevProps, props) {
-    const node = this.node;
-
-    updateNode(node, prevProps, props);
-  },
-
-});
+    this.add((dt: number) => {
+      this.elapsedTime += dt / settings.TARGET_FPMS;
+    });
+  }
+}

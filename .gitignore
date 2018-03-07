@@ -1,6 +1,8 @@
 node_modules
 .vscode
-/dist
-/build
-/docs
+dist
+build
 .DS_Store
+*-debug.log
+/packages/demo
+/packages/avg-test

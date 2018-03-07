@@ -18,27 +18,17 @@
  * limitations under the License.
  */
 
-const PIXI = require('pixi.js');
+import * as PIXI from 'pixi.js';
 
-/**
- * Class representing a Sprite.
- * @extends PIXI.Sprite
- */
 class Sprite extends PIXI.Sprite {
-
-  /**
-   * Create a sprite.
-   * It is a empty sprite, you should specify its content (use {@link Sprite#setFile}, for example)
-   * and call {@link Sprite#execSync}.
-   */
+  private _rectangle?: PIXI.Rectangle
   constructor() {
     super();
-    this.zorder = 0;
 
-    this._rectangle = null;
+    this._rectangle = undefined;
   }
 
-  set rectangle(value) {
+  set rectangle(value: PIXI.Rectangle | undefined) {
     this._rectangle = value;
     if (this.texture) {
       const baseTexture = this.texture.baseTexture;
@@ -51,13 +41,13 @@ class Sprite extends PIXI.Sprite {
     return this._rectangle;
   }
 
-  set src(value) {
+  set src(value: PIXI.BaseTexture) {
     if (this.texture) {
       this.texture.destroy();
       this.texture = new PIXI.Texture(value, this._rectangle);
     } else {
       this.texture = new PIXI.Texture(value, this._rectangle);
-      value.destroy();
+      this.destroy();
     }
   }
 }

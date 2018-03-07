@@ -1,7 +1,7 @@
 /**
- * @file        Transition module
+ * @file        find PixiJS node from react instance
  * @author      Icemic Jia <bingfeng.web@gmail.com>
- * @copyright   2015-2016 Icemic Jia
+ * @copyright   2018 Icemic Jia
  * @link        https://www.avgjs.org
  * @license     Apache License 2.0
  *
@@ -18,9 +18,24 @@
  * limitations under the License.
  */
 
-import AbstractFilter from './AbstractFilter';
-import { Transition } from './Transition';
+import core from '../core/core';
 
-Transition.AbstractFilter = AbstractFilter;
+export default function findPixiNodeByName(name: string, root: PIXI.Container | undefined): PIXI.DisplayObject | null {
+  const stage = root || <PIXI.Container>core.getStage();
 
-export { Transition };
+  const finded = stage.getChildByName(name);
+
+  if (finded) {
+    return finded;
+  } else if (stage.children && stage.children.length) {
+    for (let i = 0; i < stage.children.length; i++) {
+      const child = stage.children[i];
+      const finded = child instanceof PIXI.Container && findPixiNodeByName(name, child);
+      if (finded) {
+        return finded;
+      }
+    }
+  }
+
+  return null;
+}

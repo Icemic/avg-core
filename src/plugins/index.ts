@@ -1,8 +1,7 @@
 /**
- * @file        Main export of the AVG.js library
+ * @file        Main export of the AVG core plugins
  * @author      Icemic Jia <bingfeng.web@gmail.com>
  * @copyright   2015-2016 Icemic Jia
- * @link        https://www.avgjs.org
  * @license     Apache License 2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,23 +17,18 @@
  * limitations under the License.
  */
 
-/**
- * @namespace AVG
- */
-import * as components from 'components';
-import * as ui from 'components/ui';
-import * as plugins from 'plugins';
-
-import React, { Component } from 'react';
-import core from 'core/core';
-import findPixiNode from './components/findPixiNode';
+import Flow from './flow';
+import Script from './script';
+import localStorage from './localStorage';
+import Screenshot from './screenshot';
+import Audio from './audio';
 
 export {
-  React,
-  Component,
-  core,
-  components,
-  ui,
-  plugins,
-  findPixiNode
-};
+  Flow,
+  Script,
+  localStorage,
+  Screenshot,
+  Audio
+}
+
+// export FlexLayout from './flexLayout/flexLayout';

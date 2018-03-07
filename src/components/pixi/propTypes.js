@@ -1,7 +1,7 @@
 /**
  * @file        PropTypes defination of PIXI.DisplayObject
  * @author      Icemic Jia <bingfeng.web@gmail.com>
- * @copyright   2015-2016 Icemic Jia
+ * @copyright   2015-2017 Icemic Jia
  * @link        https://www.avgjs.org
  * @license     Apache License 2.0
  *
@@ -21,9 +21,11 @@
 import PropTypes from 'prop-types';
 
 export default {
+  name: PropTypes.string,
   alpha: PropTypes.number,
   visible: PropTypes.bool,
   cacheAsBitmap: PropTypes.bool,
+  buttonMode: PropTypes.bool,
   x: PropTypes.number,
   y: PropTypes.number,
   position: PropTypes.arrayOf(PropTypes.number),

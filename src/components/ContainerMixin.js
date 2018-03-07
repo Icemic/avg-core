@@ -1,6 +1,7 @@
 // Adapted from ReactART:
 // https://github.com/reactjs/react-art
 
+import core from 'core/core';
 const ReactMultiChild = require('react-dom/lib/ReactMultiChild');
 
 const ContainerMixin = Object.assign({}, ReactMultiChild.Mixin, {
@@ -20,6 +21,8 @@ const ContainerMixin = Object.assign({}, ReactMultiChild.Mixin, {
     const layer = this.node;
     // TODO: wrong implementation
 
+    core.emit('moveChild', layer, childNode);
+
     layer.addChild(childNode);
   },
 
@@ -36,6 +39,8 @@ const ContainerMixin = Object.assign({}, ReactMultiChild.Mixin, {
     child._mountImage = childNode;
     const layer = this.node;
 
+    core.emit('createChild', layer, childNode);
+
     layer.addChild(childNode);
   },
 
@@ -46,7 +51,8 @@ const ContainerMixin = Object.assign({}, ReactMultiChild.Mixin, {
    * @protected
    */
   removeChild(child) {
-    // console.log('remove:', child._mountImage.filename)
+    core.emit('removeChild', this.node, child._mountImage);
+
     this.node.removeChild(child._mountImage);
     child._mountImage.destroy();
     child._mountImage = null;
@@ -65,6 +71,8 @@ const ContainerMixin = Object.assign({}, ReactMultiChild.Mixin, {
     for (const key in this._renderedChildren) {
       if (this._renderedChildren.hasOwnProperty(key)) {
         const child = this._renderedChildren[key];
+
+        core.emit('mountChild', this.node, mountedImages[i]);
 
         child._mountImage = mountedImages[i];
         this.node.addChild(mountedImages[i]);
