@@ -108,6 +108,7 @@ export function updateValue(key, prevValue, value) {
 export function mountNode(node, props) {
   const setNodeValue = setValue.bind(node);
 
+  setNodeValue('name', props.name);
   setNodeValue('src', props.src);
 
   setNodeValue('alpha', props.alpha);
@@ -134,6 +135,7 @@ export function mountNode(node, props) {
 export function updateNode(node, prevProps, props) {
   const updateNodeValue = updateValue.bind(node);
 
+  updateNodeValue('name', prevProps.name, props.name);
   updateNodeValue('src', prevProps.src, props.src);
 
   updateNodeValue('alpha', prevProps.alpha, props.alpha);

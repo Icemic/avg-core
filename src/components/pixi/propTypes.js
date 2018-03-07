@@ -21,6 +21,7 @@
 import PropTypes from 'prop-types';
 
 export default {
+  name: PropTypes.string,
   alpha: PropTypes.number,
   visible: PropTypes.bool,
   cacheAsBitmap: PropTypes.bool,

@@ -35,6 +35,7 @@ import { observer } from 'mobx-react/custom';
 import { flow } from 'mobx-state-tree';
 import { define, connect, getEnv, stateTree } from './core/data';
 import findPixiNode from './components/findPixiNode';
+import findPixiNodeByName from './components/findPixiNodeByName';
 import tools from './components/componentUtils';
 import { Surface } from './components/Surface';
 
@@ -49,6 +50,7 @@ export {
   // plugins,
   stateTree,
   findPixiNode,
+  findPixiNodeByName,
   define,
   connect,
   getEnv,
