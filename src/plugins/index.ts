@@ -17,18 +17,18 @@
  * limitations under the License.
  */
 
-import Flow from './flow';
-import Script from './script';
-import localStorage from './localStorage';
-import Screenshot from './screenshot';
-import Audio from './audio';
+import Audio from "./audio";
+import Flow from "./flow";
+import localStorage from "./localStorage";
+import Screenshot from "./screenshot";
+import Script from "./script";
 
 export {
   Flow,
   Script,
   localStorage,
   Screenshot,
-  Audio
-}
+  Audio,
+};
 
 // export FlexLayout from './flexLayout/flexLayout';

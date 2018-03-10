@@ -1,8 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
-const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+const TSLintPlugin = require('tslint-webpack-plugin');
 
 const packageInfo = require('./package.json');
 
@@ -73,22 +73,17 @@ module.exports = function (env) {
       rules: [
         // First, run the linter.
         // It's important to do this before Babel processes the JS.
-        {
-          test: /\.(js|jsx)$/,
-          enforce: 'pre',
-          use: [
-            {
-              options: {
-                formatter: eslintFormatter,
-                eslintPath: require.resolve('eslint'),
-                // error-only
-                quiet: true
-              },
-              loader: require.resolve('eslint-loader'),
-            },
-          ],
-          include: path.resolve('./src'),
-        },
+        // {
+        //   test: /\.(ts|tsx)$/,
+        //   enforce: 'pre',
+        //   loader: require.resolve('tslint-loader'),
+        //   options: {
+        //     configFile: 'tslint.json'
+        //     // emitErrors: true,
+        //     // failOnHint: true,
+        //   },
+        //   include: path.resolve('./src'),
+        // },
 
         // Process JS with Babel.
         {
@@ -127,10 +122,15 @@ module.exports = function (env) {
       ],
     },
     externals: {
-      'pixi.js': 'PIXI'
+      'pixi.js': 'PIXI',
+      'react': 'React'
     },
     devtool: 'source-map',
     plugins: [
+      new TSLintPlugin({
+        files: ['./src/**/*.ts', './src/**/*.tsx'],
+        format: 'stylish'
+      }),
       // Add module names to factory functions so they appear in browser profiler.
       new webpack.NamedModulesPlugin(),
       new webpack.optimize.ModuleConcatenationPlugin(),

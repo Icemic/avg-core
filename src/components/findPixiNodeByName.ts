@@ -18,10 +18,10 @@
  * limitations under the License.
  */
 
-import core from '../core/core';
+import core from "../core/core";
 
 export default function findPixiNodeByName(name: string, root: PIXI.Container | undefined): PIXI.DisplayObject | null {
-  const stage = root || <PIXI.Container>core.getStage();
+  const stage = root || core.getStage() as PIXI.Container;
 
   const finded = stage.getChildByName(name);
 
@@ -30,9 +30,9 @@ export default function findPixiNodeByName(name: string, root: PIXI.Container | 
   } else if (stage.children && stage.children.length) {
     for (let i = 0; i < stage.children.length; i++) {
       const child = stage.children[i];
-      const finded = child instanceof PIXI.Container && findPixiNodeByName(name, child);
-      if (finded) {
-        return finded;
+      const finded2 = child instanceof PIXI.Container && findPixiNodeByName(name, child);
+      if (finded2) {
+        return finded2;
       }
     }
   }

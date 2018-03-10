@@ -19,38 +19,38 @@
  */
 
 export default class Logger {
-  name: string
-  isProduction: boolean
+  public name: string;
+  public isProduction: boolean;
   constructor(name: string) {
     this.name = name;
-    this.isProduction = process && process.env && process.env.NODE_ENV === 'production';
+    this.isProduction = process && process.env && process.env.NODE_ENV === "production";
   }
-  static create(name: string) {
+  public static create(name: string) {
     return new Logger(name);
   }
 
-  /* eslint-disable */
-  fatal(...args: any[]) {
+  /* tslint:disable */
+  public fatal(...args: any[]) {
     console.error(`[${this.name}]`, ...args);
   }
-  error(...args: any[]) {
+  public error(...args: any[]) {
     console.error(`[${this.name}]`, ...args);
   }
-  warn(...args: any[]) {
+  public warn(...args: any[]) {
     console.warn(`[${this.name}]`, ...args);
   }
-  info(...args: any[]) {
+  public info(...args: any[]) {
     console.log(`[${this.name}]`, ...args);
   }
-  debug(...args: any[]) {
+  public debug(...args: any[]) {
     if (!this.isProduction) {
       console.debug(`[${this.name}]`, ...args);
     }
   }
-  trace(...args: any[]) {
+  public trace(...args: any[]) {
     if (!this.isProduction) {
       console.trace(`[${this.name}]`, ...args);
     }
   }
-  /* eslint-enable */
+  /* tslint:enable */
 }

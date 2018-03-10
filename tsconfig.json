@@ -13,7 +13,7 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "locale": "en",
-    "declaration": false,
+    "declaration": true,
     "noImplicitThis": false
   },
   "include": [

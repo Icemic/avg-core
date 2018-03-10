@@ -29,10 +29,10 @@ export default function fitWindow(renderer: PIXI.WebGLRenderer, width: number, h
   const ratio = renderer.width / renderer.height;
   const resolution = renderer.resolution;
 
-  let offsetW,
-      offsetH,
-      contentW,
-      contentH;
+  let offsetW;
+  let offsetH;
+  let contentW;
+  let contentH;
 
   if (ratio > width / height) {
     contentW = width;
@@ -48,12 +48,12 @@ export default function fitWindow(renderer: PIXI.WebGLRenderer, width: number, h
 
   const view = renderer.view;
 
-  view.style.position = 'absolute';
+  view.style.position = "absolute";
   // renderer.view.style.width = contentW + "px";
   // renderer.view.style.height = contentH + "px";
-  view.style.backfaceVisibility = 'hidden';
-  view.style.transformOrigin = 'left top';
-  view.style.webkitTransformOrigin = 'left top';
+  view.style.backfaceVisibility = "hidden";
+  view.style.transformOrigin = "left top";
+  view.style.webkitTransformOrigin = "left top";
   view.style.transform = `scale(${contentW / renderer.width * resolution}, ${contentH / renderer.height * resolution}) translateZ(0)`;
   view.style.webkitTransform = `scale(${contentW / renderer.width * resolution}, ${contentH / renderer.height * resolution}) translateZ(0)`;
 

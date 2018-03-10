@@ -1,9 +1,9 @@
-import deepEqual from 'deep-equal';
-import { ReactUpdates } from './reactdom';
-import { attachToSprite } from '../classes/EventManager';
-import core from '../core/core';
+import deepEqual from "deep-equal";
+import { attachToSprite } from "../classes/EventManager";
+import core from "../core/core";
+import { ReactUpdates } from "./reactdom";
 
-const logger = core.getLogger('NodeMixin');
+const logger = core.getLogger("NodeMixin");
 
 const NodeMixin = {
   // fill it to avoid throw error (occurs when using react devtools)
@@ -13,7 +13,7 @@ const NodeMixin = {
 
     this.createNode(element);
     if (!this.node) {
-      logger.error('`this.node` is null, you should init it at `this.createNode`');
+      logger.error("`this.node` is null, you should init it at `this.createNode`");
     }
 
     // bind event handlers
@@ -25,10 +25,10 @@ const NodeMixin = {
 
     for (const key of keys) {
       if (/^on[A-Z]/.test(key)) {
-        if (key === 'onClick' && element.props.buttonMode !== false) {
+        if (key === "onClick" && element.props.buttonMode !== false) {
           this.node.buttonMode = true;
         }
-        this.node[`_on${key.replace(/^on/, '').toLowerCase()}`] = element.props[key];
+        this.node[`_on${key.replace(/^on/, "").toLowerCase()}`] = element.props[key];
       }
     }
   },
@@ -39,8 +39,8 @@ const NodeMixin = {
 
   mountComponentIntoNode(/* rootID, container */) {
     throw new Error(
-      'You cannot render a Canvas component standalone. '
-      + 'You need to wrap it in a Surface.'
+      "You cannot render a Canvas component standalone. "
+      + "You need to wrap it in a Surface.",
     );
   },
 
@@ -62,7 +62,7 @@ const NodeMixin = {
       this,
       props.children,
       _transaction,
-      context
+      context,
     );
     ReactUpdates.ReactReconcileTransaction.release(_transaction);
 
@@ -80,7 +80,7 @@ const NodeMixin = {
 
       for (const key of prevKeys) {
         if (/^on[A-Z]/.test(key)) {
-          delete this.node[`_on${key.replace(/^on/, '').toLowerCase()}`];
+          delete this.node[`_on${key.replace(/^on/, "").toLowerCase()}`];
         }
       }
 
@@ -90,10 +90,10 @@ const NodeMixin = {
 
       for (const key of keys) {
         if (/^on[A-Z]/.test(key)) {
-          if (key === 'onClick' && props.buttonMode !== false) {
+          if (key === "onClick" && props.buttonMode !== false) {
             this.node.buttonMode = true;
           }
-          this.node[`_on${key.replace(/^on/, '').toLowerCase()}`] = props[key];
+          this.node[`_on${key.replace(/^on/, "").toLowerCase()}`] = props[key];
         }
       }
       const _transaction = ReactUpdates.ReactReconcileTransaction.getPooled();
@@ -103,7 +103,7 @@ const NodeMixin = {
         this,
         props.children,
         _transaction,
-        context
+        context,
       );
       ReactUpdates.ReactReconcileTransaction.release(_transaction);
 
@@ -120,7 +120,7 @@ const NodeMixin = {
 
   unmountNode() {
 
-  }
+  },
 };
 
 export default NodeMixin;

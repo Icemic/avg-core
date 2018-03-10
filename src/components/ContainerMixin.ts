@@ -1,16 +1,16 @@
 // Adapted from ReactART:
 // https://github.com/reactjs/react-art
 
-import core from '../core/core';
-import { ReactMultiChild } from './reactdom';
-import Surface from './Surface';
+import core from "../core/core";
+import { ReactMultiChild } from "./reactdom";
+import Surface from "./Surface";
 
 export default class ContainerMixin {
-  private node!: PIXI.Container
-  private _renderedChildren!: any[]
-  private mountChildren!: (...args: any[]) => any
-  private updateChildren!: (...args: any[]) => any
-  private unmountChildren!: (...args: any[]) => any
+  private node!: PIXI.Container;
+  private _renderedChildren!: any[];
+  private mountChildren!: (...args: any[]) => any;
+  private updateChildren!: (...args: any[]) => any;
+  private unmountChildren!: (...args: any[]) => any;
   /**
    * Moves a child component to the supplied index.
    *
@@ -20,13 +20,13 @@ export default class ContainerMixin {
    * @param {number} lastIndex
    * @protected
    */
-  moveChild(child: any /* , afterNode, toIndex, lastIndex */) {
+  public moveChild(child: any /* , afterNode, toIndex, lastIndex */) {
     // console.log('move:', child._mountImage.filename, 'to', toIndex);
     const childNode = child._mountImage;
     const layer = this.node;
     // TODO: wrong implementation
 
-    core.emit('moveChild', layer, childNode);
+    core.emit("moveChild", layer, childNode);
 
     layer.addChild(childNode);
   }
@@ -39,12 +39,12 @@ export default class ContainerMixin {
    * @param {ReactComponent} childNode ART node to insert.
    * @protected
    */
-  createChild(child: any, afterNode: any, childNode: any) {
+  public createChild(child: any, afterNode: any, childNode: any) {
     // console.log('create:', childNode.filename)
     child._mountImage = childNode;
     const layer = this.node;
 
-    core.emit('createChild', layer, childNode);
+    core.emit("createChild", layer, childNode);
 
     layer.addChild(childNode);
   }
@@ -55,19 +55,19 @@ export default class ContainerMixin {
    * @param {ReactComponent} child Child to remove.
    * @protected
    */
-  removeChild(child: any) {
-    core.emit('removeChild', this.node, child._mountImage);
+  public removeChild(child: any) {
+    core.emit("removeChild", this.node, child._mountImage);
 
     this.node.removeChild(child._mountImage);
     child._mountImage.destroy();
     child._mountImage = null;
   }
 
-  mountAndInjectChildren(children: any, transaction: any, context: any) {
+  public mountAndInjectChildren(children: any, transaction: any, context: any) {
     const mountedImages = this.mountChildren(
       children,
       transaction,
-      context
+      context,
     );
 
     // Each mount image corresponds to one of the flattened children
@@ -77,7 +77,7 @@ export default class ContainerMixin {
       if (this._renderedChildren.hasOwnProperty(key)) {
         const child = this._renderedChildren[key];
 
-        core.emit('mountChild', this.node, mountedImages[i]);
+        core.emit("mountChild", this.node, mountedImages[i]);
 
         child._mountImage = mountedImages[i];
         this.node.addChild(mountedImages[i]);
@@ -89,8 +89,8 @@ export default class ContainerMixin {
 }
 
 function applyMixins(derivedCtor: any, baseCtors: any[]) {
-  baseCtors.forEach(baseCtor => {
-      Object.getOwnPropertyNames(baseCtor).forEach(name => {
+  baseCtors.forEach((baseCtor) => {
+      Object.getOwnPropertyNames(baseCtor).forEach((name) => {
           derivedCtor.prototype[name] = baseCtor[name];
       });
   });

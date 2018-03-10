@@ -18,25 +18,25 @@
  * limitations under the License.
  */
 
-import upperFirst from 'lodash/upperFirst';
+import upperFirst from "lodash/upperFirst";
 
-import React from 'react';
-import createComponent from '../createComponent';
-import ContainerMixin from '../ContainerMixin';
-import NodeMixin from '../NodeMixin';
-import pixiPropTypes from './propTypes';
+import React from "react";
+import ContainerMixin from "../ContainerMixin";
+import createComponent from "../createComponent";
+import NodeMixin from "../NodeMixin";
+import pixiPropTypes from "./propTypes";
 
-export default function componentify(name: string, lifeCycle: any, propTypes = {}) {
+export default function componentify(name: string, lifeCycle: any, propTypes = {}): any {
   const compName = upperFirst(name);
   const Raw = createComponent(`Raw${compName}`, ContainerMixin, NodeMixin, lifeCycle);
 
   class Component extends React.PureComponent {
-    static displayName = compName;
-    static propTypes = {
+    public static displayName = compName;
+    public static propTypes = {
       ...pixiPropTypes,
-      ...propTypes
+      ...propTypes,
     };
-    render() {
+    public render() {
       return React.createElement(Raw, this.props, this.props.children);
     }
   }

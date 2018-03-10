@@ -18,36 +18,35 @@
  * limitations under the License.
  */
 
-import compose from 'koa-compose';
+import Color from "color";
+import { EventEmitter } from "eventemitter3";
+import compose from "koa-compose";
 // import FontFaceObserver from 'fontfaceobserver';
-import { render as renderReact } from 'react-dom';
+import { render as renderReact } from "react-dom";
 // import Container from '../classes/Container';
-import { attachToSprite } from '../classes/EventManager';
-import sayHello from '../utils/sayHello';
-import fitWindow from '../utils/fitWindow';
-import Color from 'color';
-import Logger from './logger';
-import { EventEmitter } from 'eventemitter3';
+import { attachToSprite } from "../classes/EventManager";
+import fitWindow from "../utils/fitWindow";
+import sayHello from "../utils/sayHello";
+import Logger from "./logger";
 
-import { init as preloaderInit, getTexture, load as loadResources } from './preloader';
-import Ticker from './ticker';
-import { define, connect } from './data';
-
+import { connect, define } from "./data";
+import { getTexture, init as preloaderInit, load as loadResources } from "./preloader";
+import Ticker from "./ticker";
 
 // const PIXI = require('pixi.js');
-import * as PIXI from 'pixi.js';
-const isMobile = require('ismobilejs');
+import * as PIXI from "pixi.js";
+const isMobile = require("ismobilejs");
 
-const logger = Logger.create('Core');
+const logger = Logger.create("Core");
 
 export interface Options {
   // fontFamily?: string
-  renderer?: PIXI.WebGLRenderer
-  view?: HTMLCanvasElement
-  fitWindow?: boolean
-  assetsPath?: string
-  tryWebp?: boolean,
-  backgroundColor?: string
+  renderer?: PIXI.WebGLRenderer;
+  view?: HTMLCanvasElement;
+  fitWindow?: boolean;
+  assetsPath?: string;
+  tryWebp?: boolean;
+  backgroundColor?: string;
 }
 
 /**
@@ -57,7 +56,7 @@ export interface Options {
  * @memberof AVG
  */
 @connect({
-  to: 'core'
+  to: "core",
 })
 @define({
   model: {
@@ -65,9 +64,9 @@ export interface Options {
     height: 720,
     isAssetsLoading: false,
     assetsLoadingProgress: 0,
-    clickEvent: {}
+    clickEvent: {},
   },
-  actions: self => ({
+  actions: (self) => ({
     setScreenSize(width: number, height: number) {
       self.width = width;
       self.height = height;
@@ -80,21 +79,21 @@ export interface Options {
     },
     setClickEvent(e: Event) {
       self.clickEvent = e;
-    }
-  })
+    },
+  }),
 })
 export class Core extends EventEmitter {
-  private _init: boolean
-  private _tickTime: number
-  renderer: PIXI.WebGLRenderer | null
-  stage: PIXI.Container | null
-  canvas: HTMLCanvasElement | null
-  options: Options
-  private middlewares: { [name: string]: Array<(context: {}, next: () => Promise<any>) => any> }
-  private plugins: { [name: string]: object }
-  private assetsPath: string | null
-  private ticker!: Ticker
-  private data: any
+  private _init: boolean;
+  private _tickTime: number;
+  public renderer: PIXI.WebGLRenderer | null;
+  public stage: PIXI.Container | null;
+  public canvas: HTMLCanvasElement | null;
+  public options: Options;
+  private middlewares: { [name: string]: Array<(context: {}, next: () => Promise<any>) => any> };
+  private plugins: { [name: string]: object };
+  private assetsPath: string | null;
+  private ticker!: Ticker;
+  private data: any;
   constructor() {
     super();
 
@@ -131,7 +130,7 @@ export class Core extends EventEmitter {
    * @param {function} middleware instance of middleware
    * @see AVG.core.Middleware
    */
-  use(name: string, middleware: (context: {}, next: () => Promise<any>) => any) {
+  public use(name: string, middleware: (context: {}, next: () => Promise<any>) => any) {
     let middlewares: Array<(context: {}, next: () => Promise<any>) => any>;
 
     if (!this.middlewares[name]) {
@@ -150,7 +149,7 @@ export class Core extends EventEmitter {
    * @param {function} middleware instance of middleware
    * @see AVG.core.Middleware
    */
-  unuse(name: string, middleware: (context: {}, next: () => Promise<any>) => any) {
+  public unuse(name: string, middleware: (context: {}, next: () => Promise<any>) => any) {
     const middlewares = this.middlewares[name];
 
     if (middlewares) {
@@ -174,7 +173,7 @@ export class Core extends EventEmitter {
    * @param {function} next
    * @return {promise}
    */
-  post(name: string, context: object, next: (...args: any[]) => any) {
+  public post(name: string, context: object, next: (...args: any[]) => any) {
     const middlewares = this.middlewares[name];
 
     if (middlewares) {
@@ -186,12 +185,12 @@ export class Core extends EventEmitter {
 
   /**
    * install a plugin
-   * 
+   *
    * @param {any} constructor plugin class
-   * 
+   *
    * @memberOf Core
    */
-  installPlugin(constructor: (new (...args: any[]) => any)) {
+  public installPlugin(constructor: (new (...args: any[]) => any)) {
     new constructor(this);
   }
 
@@ -199,11 +198,11 @@ export class Core extends EventEmitter {
    *
    * install a plugin
    *
-   * @param {any} name 
-   * @param {any} constructor 
+   * @param {any} name
+   * @param {any} constructor
    * @memberof Core
    */
-  install(name: string, constructor: (new (...args: any[]) => any)) {
+  public install(name: string, constructor: (new (...args: any[]) => any)) {
     const instance = new constructor(this);
 
     this.plugins[name] = instance;
@@ -222,15 +221,15 @@ export class Core extends EventEmitter {
    * @param {string} [options.assetsPath='assets'] assets path
    * @param {string} [options.tryWebp=false] auto replace image file extension with .webp format when webp is supported by browser
    */
-  async init(width: number, height: number, options: Options = {}) {
+  public async init(width: number, height: number, options: Options = {}) {
     if (this._init) {
       return;
     }
     const _options: Options = {
       fitWindow: false,
-      assetsPath: '/',
+      assetsPath: "/",
       tryWebp: false,
-      backgroundColor: '#ffffff',
+      backgroundColor: "#ffffff",
       ...options,
     };
 
@@ -267,26 +266,26 @@ export class Core extends EventEmitter {
     this.options = _options;
 
     if (_options.fitWindow) {
-      window.addEventListener('resize', () => {
-        fitWindow(<PIXI.WebGLRenderer>this.renderer, window.innerWidth, window.innerHeight);
+      window.addEventListener("resize", () => {
+        fitWindow(this.renderer as PIXI.WebGLRenderer, window.innerWidth, window.innerHeight);
       });
-      fitWindow(<PIXI.WebGLRenderer>this.renderer, window.innerWidth, window.innerHeight);
+      fitWindow(this.renderer as PIXI.WebGLRenderer, window.innerWidth, window.innerHeight);
     }
 
     let assetsPath = _options.assetsPath;
 
-    if (!(<string>assetsPath).endsWith('/')) {
-      assetsPath += '/';
+    if (!(assetsPath as string).endsWith("/")) {
+      assetsPath += "/";
     }
-    this.assetsPath = <string>assetsPath;
-    preloaderInit(<string>assetsPath, <boolean>_options.tryWebp);
+    this.assetsPath = assetsPath as string;
+    preloaderInit(assetsPath as string, _options.tryWebp as boolean);
 
     this.stage = new PIXI.Container();
-    attachToSprite(<PIXI.DisplayObject>this.stage);
+    attachToSprite(this.stage as PIXI.DisplayObject);
     // this.stage._ontap = e => this.post('tap', e);
     // this.stage._onclick = e => this.post('click', e);
-    (<any>this.stage)._ontap = (e: Event) => core.setClickEvent(e);
-    (<any>this.stage)._onclick = (e: Event) => core.setClickEvent(e);
+    (this.stage as any)._ontap = (e: Event) => core.setClickEvent(e);
+    (this.stage as any)._onclick = (e: Event) => core.setClickEvent(e);
 
     this.ticker = new Ticker();
     this.ticker.add(this.tick.bind(this));
@@ -294,26 +293,26 @@ export class Core extends EventEmitter {
     this._init = true;
   }
 
-  getRenderer() {
+  public getRenderer() {
     if (this._init && this.renderer) {
       return this.renderer;
     }
-    logger.error('Renderer hasn\'t been initialed.');
+    logger.error("Renderer hasn't been initialed.");
 
-    throw 'Renderer hasn\'t been initialed.';
+    throw new Error("Renderer hasn't been initialed.");
   }
-  getStage() {
+  public getStage() {
     if (this._init && this.stage) {
       return this.stage;
     }
-    logger.error('Stage hasn\'t been initialed.');
+    logger.error("Stage hasn't been initialed.");
 
-    throw 'Stage hasn\'t been initialed.';
+    throw new Error("Stage hasn't been initialed.");
   }
-  getAssetsPath() {
+  public getAssetsPath() {
     return this.assetsPath;
   }
-  getTexture(url: string) {
+  public getTexture(url: string) {
     return getTexture(url);
   }
 
@@ -323,12 +322,12 @@ export class Core extends EventEmitter {
    * @param {string} name
    * @return {Logger} logger instance
    */
-  getLogger(name: string) {
+  public getLogger(name: string) {
     return Logger.create(name);
   }
 
   // TODO: move to actions
-  async loadAssets(list: Array<string>) {
+  public async loadAssets(list: string[]) {
     const core = this.data;
     core.setAssetsLoading(true);
     await loadResources(list, (e: any) => core.setAssetsLoadingProgress(e.progress));
@@ -343,15 +342,15 @@ export class Core extends EventEmitter {
    * @param {boolean} append whether append canvas element to target
    * @return {Promise}
    */
-  async render(component: React.Component, target: HTMLDocument, append = true) {
+  public async render(component: React.Component, target: HTMLDocument, append = true) {
     if (!this._init) {
-      throw Error('not initialed');
+      throw Error("not initialed");
     }
 
-    return new Promise(resolve => {
-      renderReact(component, <any>target, <any>resolve);
+    return new Promise((resolve) => {
+      renderReact(component, target as any, resolve as any);
     }).then(() => {
-      append && target.appendChild((<PIXI.WebGLRenderer>this.renderer).view);
+      append && target.appendChild((this.renderer as PIXI.WebGLRenderer).view);
     });
   }
 
@@ -360,33 +359,33 @@ export class Core extends EventEmitter {
    *
    * @return {PIXI.ticker.Ticker} shared ticker
    */
-  getTicker() {
+  public getTicker() {
     return this.ticker;
   }
 
   /**
    * @private
    */
-  tick(deltaTime: number) {
+  public tick(deltaTime: number) {
     this._tickTime += deltaTime;
     if (this._init && this._tickTime > 0.98) {
-      (<PIXI.WebGLRenderer>this.renderer).render(<PIXI.DisplayObject>this.stage);
+      (this.renderer as PIXI.WebGLRenderer).render(this.stage as PIXI.DisplayObject);
       this._tickTime = 0;
-      (<any>window).stats && (<any>window).stats.update();
+      (window as any).stats && (window as any).stats.update();
     }
   }
 
   /**
    * start rendering, this must be called if you want to start your game.
    */
-  start() {
+  public start() {
     this.ticker.start();
   }
 
   /**
    * stop rendering
    */
-  stop() {
+  public stop() {
     this.ticker.stop();
   }
 }
@@ -395,7 +394,7 @@ export class Core extends EventEmitter {
  * @export
  * @type {Core}
  */
-const core = new Core();
+const coreInstance = new Core();
 // Object.freeze(core);
 
-export default core;
+export default coreInstance;

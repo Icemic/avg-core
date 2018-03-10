@@ -18,13 +18,13 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import * as PIXI from 'pixi.js';
-import { ReactUpdates, ReactInstanceMap } from './reactdom';
-import ContainerMixin from '../components/ContainerMixin';
+import * as PIXI from "pixi.js";
+import PropTypes from "prop-types";
+import React from "react";
+import ContainerMixin from "../components/ContainerMixin";
+import { ReactInstanceMap, ReactUpdates } from "./reactdom";
 
-import core from '../core/core';
+import core from "../core/core";
 
 /**
  * Surface is a standard React component and acts as the main drawing canvas.
@@ -32,19 +32,19 @@ import core from '../core/core';
  */
 export default class Surface extends React.PureComponent {
   // mixins: [ContainerMixin],
-  static propTypes = {
-    children: PropTypes.any
+  public static propTypes = {
+    children: PropTypes.any,
   };
   constructor(...args: any[]) {
     super(...args);
 
     // Object.assign(this, ContainerMixin);
   }
-  private node!: PIXI.Container
-  private mountAndInjectChildren!: (...args: any[]) => any
-  private updateChildren!: (...args: any[]) => any
-  private unmountChildren!: (...args: any[]) => any
-  componentDidMount() {
+  private node!: PIXI.Container;
+  private mountAndInjectChildren!: (...args: any[]) => any;
+  private updateChildren!: (...args: any[]) => any;
+  private unmountChildren!: (...args: any[]) => any;
+  public componentDidMount() {
     this.node = core.getStage();
 
     // This is the integration point between custom canvas components and React
@@ -55,12 +55,12 @@ export default class Surface extends React.PureComponent {
       this,
       this.props.children,
       transaction,
-      ReactInstanceMap.get(this)._context
+      ReactInstanceMap.get(this)._context,
     );
     ReactUpdates.ReactReconcileTransaction.release(transaction);
   }
 
-  componentDidUpdate() {
+  public componentDidUpdate() {
     // We have to manually apply child reconciliation since child are not
     const transaction = ReactUpdates.ReactReconcileTransaction.getPooled();
 
@@ -69,25 +69,25 @@ export default class Surface extends React.PureComponent {
       this,
       this.props.children,
       transaction,
-      ReactInstanceMap.get(this)._context
+      ReactInstanceMap.get(this)._context,
     );
     ReactUpdates.ReactReconcileTransaction.release(transaction);
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     // Implemented in ReactMultiChild.Mixin
     this.unmountChildren();
     this.node.removeChildren();
   }
 
-  render() {
+  public render() {
     return null;
   }
 }
 
 function applyMixins(derivedCtor: any, baseCtors: any[]) {
-  baseCtors.forEach(baseCtor => {
-      Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+  baseCtors.forEach((baseCtor) => {
+      Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => {
           derivedCtor.prototype[name] = baseCtor.prototype[name];
       });
   });

@@ -18,45 +18,45 @@
  * limitations under the License.
  */
 
-import * as PIXI from 'pixi.js';
-import { MouseEvent } from 'react';
+import * as PIXI from "pixi.js";
+import { MouseEvent } from "react";
 
 export function attachToSprite(sprite: PIXI.DisplayObject) {
   sprite.interactive = true;
-  sprite.on('click', handleEvent);
-  sprite.on('tap', handleEvent);
-  sprite.on('mousemove', handleEvent);
-  sprite.on('mouseover', handleEvent);
-  sprite.on('mouseout', handleEvent);
-  sprite.on('mousedown', handleEvent);
-  sprite.on('mouseup', handleEvent);
-  sprite.on('mouseupoutside', handleEvent);
-  sprite.on('touchstart', handleEvent);
-  sprite.on('touchmove', handleEvent);
-  sprite.on('touchend', handleEvent);
-  sprite.on('touchendoutside', handleEvent);
+  sprite.on("click", handleEvent);
+  sprite.on("tap", handleEvent);
+  sprite.on("mousemove", handleEvent);
+  sprite.on("mouseover", handleEvent);
+  sprite.on("mouseout", handleEvent);
+  sprite.on("mousedown", handleEvent);
+  sprite.on("mouseup", handleEvent);
+  sprite.on("mouseupoutside", handleEvent);
+  sprite.on("touchstart", handleEvent);
+  sprite.on("touchmove", handleEvent);
+  sprite.on("touchend", handleEvent);
+  sprite.on("touchendoutside", handleEvent);
 
-  sprite.on('pointerover', pointerHandler);
+  sprite.on("pointerover", pointerHandler);
   // sprite.on('pointerenter', pointerHandler);
-  sprite.on('pointerdown', pointerHandler);
-  sprite.on('pointermove', pointerHandler);
-  sprite.on('pointerup', pointerHandler);
-  sprite.on('pointerupoutside', pointerHandler);
-  sprite.on('pointercancel', pointerHandler);
-  sprite.on('pointerout', pointerHandler);
+  sprite.on("pointerdown", pointerHandler);
+  sprite.on("pointermove", pointerHandler);
+  sprite.on("pointerup", pointerHandler);
+  sprite.on("pointerupoutside", pointerHandler);
+  sprite.on("pointercancel", pointerHandler);
+  sprite.on("pointerout", pointerHandler);
   // sprite.on('pointerleave', pointerHandler);
-  sprite.on('pointertap', pointerHandler);
+  sprite.on("pointertap", pointerHandler);
 }
 
 class EventData {
-  public type: string
-  public originalEvent: PIXI.interaction.InteractionEvent
-  public target: PIXI.DisplayObject
-  public currentTarget: PIXI.DisplayObject
-  public global: PIXI.Point
-  public local?: PIXI.Point
-  public movement?: { x: number, y: number }
-  private _preventDefault: boolean
+  public type: string;
+  public originalEvent: PIXI.interaction.InteractionEvent;
+  public target: PIXI.DisplayObject;
+  public currentTarget: PIXI.DisplayObject;
+  public global: PIXI.Point;
+  public local?: PIXI.Point;
+  public movement?: { x: number, y: number };
+  private _preventDefault: boolean;
   constructor(evt: PIXI.interaction.InteractionEvent) {
     this.type = evt.type;
     this._preventDefault = false;
@@ -70,8 +70,8 @@ class EventData {
     // 有时候会有奇怪的触发，导致 data.originalEvent 是 null……
     if (evt.data.originalEvent) {
       this.movement = {
-        x: (<any>evt.data.originalEvent).movementX,
-        y: (<any>evt.data.originalEvent).movementY,
+        x: (evt.data.originalEvent as any).movementX,
+        y: (evt.data.originalEvent as any).movementY,
       };
     } else {
       this.movement = { x: 0, y: 0 };
@@ -96,7 +96,7 @@ class EventData {
 
 function handleEvent(evt: PIXI.interaction.InteractionEvent) {
   const e = new EventData(evt);
-  const handler = e.currentTarget ? (<any>e.currentTarget)[`_on${e.type}`] : null;
+  const handler = e.currentTarget ? (e.currentTarget as any)[`_on${e.type}`] : null;
 
   handler && handler(e);
 }
@@ -104,8 +104,7 @@ function handleEvent(evt: PIXI.interaction.InteractionEvent) {
 function pointerHandler(evt: PIXI.interaction.InteractionEvent) {
   const e = new EventData(evt);
   // console.log(e.type)
-  const defaultHandler = e.currentTarget ? (<any>e.currentTarget)[`_on${e.type}`] : null;
+  const defaultHandler = e.currentTarget ? (e.currentTarget as any)[`_on${e.type}`] : null;
 
   defaultHandler && defaultHandler(e);
 }
-

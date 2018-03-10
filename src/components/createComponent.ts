@@ -1,13 +1,13 @@
-import core from '../core/core';
+import core from "../core/core";
 
 export default function createComponent(name: string, ...mixins: any[]): any {
   class ReactAVGComponent {
-    private construct!: (...args: any[]) => any
-    private node!: PIXI.Container | null
-    private _renderedChildren!: any[] | null
-    private _mostRecentlyPlacedChild!: any | null
+    private construct!: (...args: any[]) => any;
+    private node!: PIXI.Container | null;
+    private _renderedChildren!: any[] | null;
+    private _mostRecentlyPlacedChild!: any | null;
 
-    displayName = name
+    public displayName = name;
     constructor(...args: any[]) {
       this.node = null;
       // this._mountImage = null;
@@ -34,28 +34,28 @@ function wrapNodeLifeCycle(lifeCycle: { [key: string]: (...args: any[]) => any }
     unmountNode } = lifeCycle;
 
   if (lifeCycle.createNode) {
-    ret.createNode = function () {
+    ret.createNode = function() {
       createNode.call(this);
-      core.emit('createNode', this.node);
+      core.emit("createNode", this.node);
     };
   }
   if (lifeCycle.mountNode) {
-    ret.mountNode = function (props) {
-      core.emit('mountNode', this.node, props);
+    ret.mountNode = function(props) {
+      core.emit("mountNode", this.node, props);
 
       return mountNode.call(this, props);
     };
   }
   if (lifeCycle.updateNode) {
-    ret.updateNode = function (prevProps, props) {
-      core.emit('updateNode', this.node, prevProps, props);
+    ret.updateNode = function(prevProps, props) {
+      core.emit("updateNode", this.node, prevProps, props);
 
       return updateNode.call(this, prevProps, props);
     };
   }
   if (lifeCycle.unmountNode) {
-    ret.unmountNode = function () {
-      core.emit('unmountNode', this.node);
+    ret.unmountNode = function() {
+      core.emit("unmountNode", this.node);
 
       return unmountNode.call(this);
     };
