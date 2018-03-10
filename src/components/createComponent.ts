@@ -18,7 +18,15 @@ export default function createComponent(name: string, ...mixins: any[]): any {
   }
 
   for (let i = 0, l = mixins.length; i < l; i++) {
-    Object.assign(ReactAVGComponent.prototype, wrapNodeLifeCycle(mixins[i]));
+    let mixin = mixins[i];
+    if (mixin.prototype) {
+      const _mixin: { [key: string]: any } = {};
+      Object.getOwnPropertyNames(mixin.prototype).forEach((funcName) => {
+        _mixin[funcName] = mixin.prototype[funcName];
+      });
+      mixin = _mixin;
+    }
+    Object.assign(ReactAVGComponent.prototype, wrapNodeLifeCycle(mixin));
   }
 
   return ReactAVGComponent;

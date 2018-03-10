@@ -96,4 +96,4 @@ function applyMixins(derivedCtor: any, baseCtors: any[]) {
   });
 }
 
-applyMixins(ContainerMixin, ReactMultiChild.Mixin);
+applyMixins(ContainerMixin, [ReactMultiChild.Mixin]);

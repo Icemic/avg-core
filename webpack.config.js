@@ -123,7 +123,7 @@ module.exports = function (env) {
     },
     externals: {
       'pixi.js': 'PIXI',
-      'react': 'React'
+      // 'react': 'React'
     },
     devtool: 'source-map',
     plugins: [
