@@ -34,15 +34,16 @@ import Ticker from './ticker';
 import { define, connect } from './data';
 
 
-const PIXI = require('pixi.js');
+// const PIXI = require('pixi.js');
+import * as PIXI from 'pixi.js';
 const isMobile = require('ismobilejs');
 
 const logger = Logger.create('Core');
 
-interface Options {
+export interface Options {
   // fontFamily?: string
   renderer?: PIXI.WebGLRenderer
-  view?: HTMLDocument
+  view?: HTMLCanvasElement
   fitWindow?: boolean
   assetsPath?: string
   tryWebp?: boolean,
@@ -71,7 +72,7 @@ interface Options {
       self.width = width;
       self.height = height;
     },
-    setAssetsLoading(value: number) {
+    setAssetsLoading(value: boolean) {
       self.isAssetsLoading = value;
     },
     setAssetsLoadingProgress(value: number) {
@@ -82,17 +83,17 @@ interface Options {
     }
   })
 })
-class Core extends EventEmitter {
+export class Core extends EventEmitter {
   private _init: boolean
   private _tickTime: number
   renderer: PIXI.WebGLRenderer | null
-  stage: PIXI.DisplayObject | null
+  stage: PIXI.Container | null
   canvas: HTMLCanvasElement | null
   options: Options
   private middlewares: { [name: string]: Array<(context: {}, next: () => Promise<any>) => any> }
   private plugins: { [name: string]: object }
   private assetsPath: string | null
-  private ticker: Ticker
+  private ticker!: Ticker
   private data: any
   constructor() {
     super();
@@ -294,20 +295,20 @@ class Core extends EventEmitter {
   }
 
   getRenderer() {
-    if (this._init) {
+    if (this._init && this.renderer) {
       return this.renderer;
     }
     logger.error('Renderer hasn\'t been initialed.');
 
-    return null;
+    throw 'Renderer hasn\'t been initialed.';
   }
   getStage() {
-    if (this._init) {
+    if (this._init && this.stage) {
       return this.stage;
     }
     logger.error('Stage hasn\'t been initialed.');
 
-    return null;
+    throw 'Stage hasn\'t been initialed.';
   }
   getAssetsPath() {
     return this.assetsPath;

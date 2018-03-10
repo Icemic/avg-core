@@ -25,7 +25,7 @@
  * @param {number} width width to fit
  * @param {number} height height to fit
  */
-export default function fitWindow(renderer, width, height) {
+export default function fitWindow(renderer: PIXI.WebGLRenderer, width: number, height: number) {
   const ratio = renderer.width / renderer.height;
   const resolution = renderer.resolution;
 

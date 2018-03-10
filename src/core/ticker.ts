@@ -31,8 +31,8 @@ const settings = PIXI.settings;
  */
 export default class Ticker extends PIXI.ticker.Ticker {
   elapsedTime: number
-  constructor(...args: any[]) {
-    super(...args);
+  constructor() {
+    super();
 
     this.elapsedTime = 0;
 

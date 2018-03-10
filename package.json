@@ -2,7 +2,19 @@
   "name": "avg-core",
   "version": "0.1.1",
   "description": "Develop Adventure Game (or ADV, Visual Novel, Galgame, etc.) on your own!",
-  "main": "dist/avg.js",
+  "keywords": [
+    "Game Engine",
+    "AVG",
+    "Visual Novel",
+    "Galgame",
+    "Game"
+  ],
+  "main": "dist/avg.umd.js",
+  "module": "dist/avg.es5.js",
+  "typings": "dist/types/avg.d.ts",
+  "files": [
+    "dist"
+  ],
   "author": "Icemic Jia <bingfeng.web@gmail.com>",
   "homepage": "https://avgjs.org/",
   "scripts": {
@@ -12,13 +24,6 @@
     "docs": "esdoc -c esdoc.json",
     "test": "mocha --compilers js:babel-core/register"
   },
-  "keywords": [
-    "Game Engine",
-    "AVG",
-    "Visual Novel",
-    "Galgame",
-    "Game"
-  ],
   "license": "Apache-2.0",
   "dependencies": {
     "avg-storyscript": "^0.2.2",
@@ -46,12 +51,14 @@
   },
   "devDependencies": {
     "@types/color": "^3.0.0",
+    "@types/deep-equal": "^1.0.1",
     "@types/koa-compose": "^3.2.2",
+    "@types/lodash": "^4.14.104",
     "@types/node": "^8.5.2",
     "@types/pixi.js": "4.6.x",
     "@types/prop-types": "^15.5.2",
     "@types/react": "^15.6.10",
-    "@types/react-dom": "^15.5.6",
+    "@types/react-dom": "^15.5.7",
     "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^7.1.1",
@@ -76,7 +83,7 @@
     "mocha": "^3.0.2",
     "sinon": "^1.17.5",
     "ts-loader": "^3.2.0",
-    "typescript": "2.6.2",
+    "typescript": "^2.7.2",
     "webpack": "^3.6.0"
   }
 }

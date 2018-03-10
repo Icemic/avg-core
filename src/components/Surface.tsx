@@ -20,26 +20,30 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactUpdates from 'react-dom/lib/ReactUpdates';
-import ReactInstanceMap from 'react-dom/lib/ReactInstanceMap';
-import ContainerMixin from 'components/ContainerMixin';
+import * as PIXI from 'pixi.js';
+import { ReactUpdates, ReactInstanceMap } from './reactdom';
+import ContainerMixin from '../components/ContainerMixin';
 
-import core from 'core/core';
+import core from '../core/core';
 
 /**
  * Surface is a standard React component and acts as the main drawing canvas.
  * ReactCanvas components cannot be rendered outside a Surface.
  */
-export class Surface extends React.PureComponent {
+export default class Surface extends React.PureComponent {
   // mixins: [ContainerMixin],
   static propTypes = {
     children: PropTypes.any
   };
-  constructor(props) {
-    super(props);
+  constructor(...args: any[]) {
+    super(...args);
 
-    Object.assign(this, ContainerMixin);
+    // Object.assign(this, ContainerMixin);
   }
+  private node!: PIXI.Container
+  private mountAndInjectChildren!: (...args: any[]) => any
+  private updateChildren!: (...args: any[]) => any
+  private unmountChildren!: (...args: any[]) => any
   componentDidMount() {
     this.node = core.getStage();
 
@@ -80,5 +84,15 @@ export class Surface extends React.PureComponent {
     return null;
   }
 }
+
+function applyMixins(derivedCtor: any, baseCtors: any[]) {
+  baseCtors.forEach(baseCtor => {
+      Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+          derivedCtor.prototype[name] = baseCtor.prototype[name];
+      });
+  });
+}
+
+applyMixins(Surface, [ContainerMixin]);
 
 // module.exports = Surface;

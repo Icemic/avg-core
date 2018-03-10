@@ -21,12 +21,12 @@
 import upperFirst from 'lodash/upperFirst';
 
 import React from 'react';
-import createComponent from 'components/createComponent';
-import ContainerMixin from 'components/ContainerMixin';
-import NodeMixin from 'components/NodeMixin';
+import createComponent from '../createComponent';
+import ContainerMixin from '../ContainerMixin';
+import NodeMixin from '../NodeMixin';
 import pixiPropTypes from './propTypes';
 
-export default function componentify(name, lifeCycle, propTypes = {}) {
+export default function componentify(name: string, lifeCycle: any, propTypes = {}) {
   const compName = upperFirst(name);
   const Raw = createComponent(`Raw${compName}`, ContainerMixin, NodeMixin, lifeCycle);
 

@@ -1,7 +1,7 @@
 /**
- * @file        Flow class
+ * @file        find PixiJS node from react instance
  * @author      Icemic Jia <bingfeng.web@gmail.com>
- * @copyright   2015-2016 Icemic Jia
+ * @copyright   2017 Icemic Jia
  * @link        https://www.avgjs.org
  * @license     Apache License 2.0
  *
@@ -18,16 +18,17 @@
  * limitations under the License.
  */
 
-/* eslint-disable */
+import * as PIXI from 'pixi.js';
 
-/**
- * wait for some time
- * @method wait
- * @param  {Number} time how long you want to block script flow, in miliionseconds.
- * @return {Promise}
- */
-export function wait(time) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => resolve(), time);
-  });
+export default function findPixiNode(ref: any) {
+  const instance = ref._reactInternalInstance;
+  const node = instance._renderedComponent.node || instance._mountImage;
+
+  if (node) {
+    return node;
+  } else if (ref instanceof PIXI.DisplayObject) {
+    return ref;
+  }
+
+  return null;
 }

@@ -1,14 +1,14 @@
-import ReactUpdates from 'react-dom/lib/ReactUpdates';
 import deepEqual from 'deep-equal';
-import { attachToSprite } from 'classes/EventManager';
-import core from 'core/core';
+import { ReactUpdates } from './reactdom';
+import { attachToSprite } from '../classes/EventManager';
+import core from '../core/core';
 
 const logger = core.getLogger('NodeMixin');
 
 const NodeMixin = {
   // fill it to avoid throw error (occurs when using react devtools)
   _hostNode: {},
-  construct(element) {
+  construct(element: any) {
     this._currentElement = element;
 
     this.createNode(element);
@@ -50,7 +50,7 @@ const NodeMixin = {
     return this;
   },
 
-  mountComponent(transaction, nativeParent, nativeContainerInfo, context) {
+  mountComponent(transaction: any, nativeParent: any, nativeContainerInfo: any, context: any) {
     const props = this._currentElement.props;
 
     const layer = this.mountNode(props);
@@ -69,7 +69,7 @@ const NodeMixin = {
     return layer;
   },
 
-  receiveComponent(nextComponent, transaction, context) {
+  receiveComponent(nextComponent: any, transaction: any, context: any) {
     const prevProps = this._currentElement.props;
     const props = nextComponent.props;
 

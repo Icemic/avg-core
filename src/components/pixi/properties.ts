@@ -18,10 +18,9 @@
  * limitations under the License.
  */
 
+import * as PIXI from 'pixi.js';
 import deepEqual from 'deep-equal';
-import core from 'core/core';
-
-const PIXI = require('pixi.js');
+import core from '../../core/core';
 
 const logger = core.getLogger('MountNode');
 
@@ -38,14 +37,16 @@ const logger = core.getLogger('MountNode');
  * @param {any} value
  * @return {any}
  */
-function convertToPixiValue(value) {
+function convertToPixiValue(value: any) {
   if (value instanceof Array) {
     if (value.length === 2) {
       return new PIXI.Point(value[0], value[1]);
     } else if (value.length === 4) {
       return new PIXI.Rectangle(value[0], value[1], value[2], value[3]);
     } else if (value.length === 9) {
-      return PIXI.Matrix.fromArray(value);
+      const matrix = new PIXI.Matrix();
+      matrix.fromArray(value);
+      return matrix;
     }
     logger.warn(`Unrecognized array: ${value}`);
 
@@ -67,7 +68,7 @@ function convertToPixiValue(value) {
  * @param {any} value
  * @param {any} defaultValue
  */
-export function setValue(key, value, defaultValue) {
+export function setValue(key: string, value: any, defaultValue: any) {
   const node = this;
 
   if (value === undefined) {
@@ -93,7 +94,7 @@ export function setValue(key, value, defaultValue) {
  * @param {any} prevValue
  * @param {any} value
  */
-export function updateValue(key, prevValue, value) {
+export function updateValue(key: string, prevValue: any, value: any) {
   if (!deepEqual(prevValue, value)) {
     setValue.call(this, key, value);
   }
@@ -105,7 +106,7 @@ export function updateValue(key, prevValue, value) {
  * @param {PIXI.DisplayObject} node
  * @param {object} props
  */
-export function mountNode(node, props) {
+export function mountNode(node: PIXI.DisplayObject, props: { [key: string]: any }) {
   const setNodeValue = setValue.bind(node);
 
   setNodeValue('name', props.name);
@@ -132,7 +133,7 @@ export function mountNode(node, props) {
   setNodeValue('tint', props.tint);
 }
 
-export function updateNode(node, prevProps, props) {
+export function updateNode(node: PIXI.DisplayObject, prevProps: { [key: string]: any }, props: { [key: string]: any }) {
   const updateNodeValue = updateValue.bind(node);
 
   updateNodeValue('name', prevProps.name, props.name);

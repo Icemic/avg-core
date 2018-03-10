@@ -1,11 +1,16 @@
 // Adapted from ReactART:
 // https://github.com/reactjs/react-art
 
-import core from 'core/core';
-const ReactMultiChild = require('react-dom/lib/ReactMultiChild');
+import core from '../core/core';
+import { ReactMultiChild } from './reactdom';
+import Surface from './Surface';
 
-const ContainerMixin = Object.assign({}, ReactMultiChild.Mixin, {
-
+export default class ContainerMixin {
+  private node!: PIXI.Container
+  private _renderedChildren!: any[]
+  private mountChildren!: (...args: any[]) => any
+  private updateChildren!: (...args: any[]) => any
+  private unmountChildren!: (...args: any[]) => any
   /**
    * Moves a child component to the supplied index.
    *
@@ -15,7 +20,7 @@ const ContainerMixin = Object.assign({}, ReactMultiChild.Mixin, {
    * @param {number} lastIndex
    * @protected
    */
-  moveChild(child /* , afterNode, toIndex, lastIndex */) {
+  moveChild(child: any /* , afterNode, toIndex, lastIndex */) {
     // console.log('move:', child._mountImage.filename, 'to', toIndex);
     const childNode = child._mountImage;
     const layer = this.node;
@@ -24,7 +29,7 @@ const ContainerMixin = Object.assign({}, ReactMultiChild.Mixin, {
     core.emit('moveChild', layer, childNode);
 
     layer.addChild(childNode);
-  },
+  }
 
   /**
    * Creates a child component.
@@ -34,7 +39,7 @@ const ContainerMixin = Object.assign({}, ReactMultiChild.Mixin, {
    * @param {ReactComponent} childNode ART node to insert.
    * @protected
    */
-  createChild(child, afterNode, childNode) {
+  createChild(child: any, afterNode: any, childNode: any) {
     // console.log('create:', childNode.filename)
     child._mountImage = childNode;
     const layer = this.node;
@@ -42,7 +47,7 @@ const ContainerMixin = Object.assign({}, ReactMultiChild.Mixin, {
     core.emit('createChild', layer, childNode);
 
     layer.addChild(childNode);
-  },
+  }
 
   /**
    * Removes a child component.
@@ -50,15 +55,15 @@ const ContainerMixin = Object.assign({}, ReactMultiChild.Mixin, {
    * @param {ReactComponent} child Child to remove.
    * @protected
    */
-  removeChild(child) {
+  removeChild(child: any) {
     core.emit('removeChild', this.node, child._mountImage);
 
     this.node.removeChild(child._mountImage);
     child._mountImage.destroy();
     child._mountImage = null;
-  },
+  }
 
-  mountAndInjectChildren(children, transaction, context) {
+  mountAndInjectChildren(children: any, transaction: any, context: any) {
     const mountedImages = this.mountChildren(
       children,
       transaction,
@@ -80,8 +85,15 @@ const ContainerMixin = Object.assign({}, ReactMultiChild.Mixin, {
         i++;
       }
     }
-  },
+  }
+}
 
-});
+function applyMixins(derivedCtor: any, baseCtors: any[]) {
+  baseCtors.forEach(baseCtor => {
+      Object.getOwnPropertyNames(baseCtor).forEach(name => {
+          derivedCtor.prototype[name] = baseCtor[name];
+      });
+  });
+}
 
-export default ContainerMixin;
+applyMixins(ContainerMixin, ReactMultiChild.Mixin);

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "experimentalDecorators": true,
-    "allowJs": true,
+    "allowJs": false,
     "jsx": "preserve",
     "module": "esnext",
     "lib": [
@@ -12,13 +12,18 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "locale": "en"
+    "locale": "en",
+    "declaration": false,
+    "noImplicitThis": false
   },
   "include": [
     "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "src/components/ui/*",
+    "src/components/router/*",
+    "src/plugins/*"
   ]
 }

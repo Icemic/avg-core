@@ -37,7 +37,7 @@ import { define, connect, getEnv, stateTree } from './core/data';
 import findPixiNode from './components/findPixiNode';
 import findPixiNodeByName from './components/findPixiNodeByName';
 import tools from './components/componentUtils';
-import { Surface } from './components/Surface';
+import Surface from './components/Surface';
 
 export {
   React,
