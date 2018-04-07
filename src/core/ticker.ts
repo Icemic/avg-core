@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-import * as PIXI from "pixi.js";
+import * as PIXI from 'pixi.js';
 
 const settings = PIXI.settings;
 

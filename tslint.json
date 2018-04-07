@@ -3,6 +3,7 @@
     "tslint:recommended"
   ],
   "rules": {
+    "quotemark": [true, "single", "jsx-double"],
     "no-unused-expression": {
       "severity": "warning"
     },

@@ -17,11 +17,11 @@
  * limitations under the License.
  */
 
-import Audio from "./audio";
-import Flow from "./flow";
-import localStorage from "./localStorage";
-import Screenshot from "./screenshot";
-import Script from "./script";
+import Audio from './audio';
+import Flow from './flow';
+import localStorage from './localStorage';
+import Screenshot from './screenshot';
+import Script from './script';
 
 export {
   Flow,

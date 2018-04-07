@@ -1,9 +1,9 @@
 // Adapted from ReactART:
 // https://github.com/reactjs/react-art
 
-import core from "../core/core";
-import { ReactMultiChild } from "./reactdom";
-import Surface from "./Surface";
+import core from '../core/core';
+import { ReactMultiChild } from './reactdom';
+import Surface from './Surface';
 
 export default class ContainerMixin {
   private node!: PIXI.Container;
@@ -26,7 +26,7 @@ export default class ContainerMixin {
     const layer = this.node;
     // TODO: wrong implementation
 
-    core.emit("moveChild", layer, childNode);
+    core.emit('moveChild', layer, childNode);
 
     layer.addChild(childNode);
   }
@@ -44,7 +44,7 @@ export default class ContainerMixin {
     child._mountImage = childNode;
     const layer = this.node;
 
-    core.emit("createChild", layer, childNode);
+    core.emit('createChild', layer, childNode);
 
     layer.addChild(childNode);
   }
@@ -56,7 +56,7 @@ export default class ContainerMixin {
    * @protected
    */
   public removeChild(child: any) {
-    core.emit("removeChild", this.node, child._mountImage);
+    core.emit('removeChild', this.node, child._mountImage);
 
     this.node.removeChild(child._mountImage);
     child._mountImage.destroy();
@@ -77,7 +77,7 @@ export default class ContainerMixin {
       if (this._renderedChildren.hasOwnProperty(key)) {
         const child = this._renderedChildren[key];
 
-        core.emit("mountChild", this.node, mountedImages[i]);
+        core.emit('mountChild', this.node, mountedImages[i]);
 
         child._mountImage = mountedImages[i];
         this.node.addChild(mountedImages[i]);

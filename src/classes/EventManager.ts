@@ -18,34 +18,34 @@
  * limitations under the License.
  */
 
-import * as PIXI from "pixi.js";
-import { MouseEvent } from "react";
+import * as PIXI from 'pixi.js';
+import { MouseEvent } from 'react';
 
 export function attachToSprite(sprite: PIXI.DisplayObject) {
   sprite.interactive = true;
-  sprite.on("click", handleEvent);
-  sprite.on("tap", handleEvent);
-  sprite.on("mousemove", handleEvent);
-  sprite.on("mouseover", handleEvent);
-  sprite.on("mouseout", handleEvent);
-  sprite.on("mousedown", handleEvent);
-  sprite.on("mouseup", handleEvent);
-  sprite.on("mouseupoutside", handleEvent);
-  sprite.on("touchstart", handleEvent);
-  sprite.on("touchmove", handleEvent);
-  sprite.on("touchend", handleEvent);
-  sprite.on("touchendoutside", handleEvent);
+  sprite.on('click', handleEvent);
+  sprite.on('tap', handleEvent);
+  sprite.on('mousemove', handleEvent);
+  sprite.on('mouseover', handleEvent);
+  sprite.on('mouseout', handleEvent);
+  sprite.on('mousedown', handleEvent);
+  sprite.on('mouseup', handleEvent);
+  sprite.on('mouseupoutside', handleEvent);
+  sprite.on('touchstart', handleEvent);
+  sprite.on('touchmove', handleEvent);
+  sprite.on('touchend', handleEvent);
+  sprite.on('touchendoutside', handleEvent);
 
-  sprite.on("pointerover", pointerHandler);
+  sprite.on('pointerover', pointerHandler);
   // sprite.on('pointerenter', pointerHandler);
-  sprite.on("pointerdown", pointerHandler);
-  sprite.on("pointermove", pointerHandler);
-  sprite.on("pointerup", pointerHandler);
-  sprite.on("pointerupoutside", pointerHandler);
-  sprite.on("pointercancel", pointerHandler);
-  sprite.on("pointerout", pointerHandler);
+  sprite.on('pointerdown', pointerHandler);
+  sprite.on('pointermove', pointerHandler);
+  sprite.on('pointerup', pointerHandler);
+  sprite.on('pointerupoutside', pointerHandler);
+  sprite.on('pointercancel', pointerHandler);
+  sprite.on('pointerout', pointerHandler);
   // sprite.on('pointerleave', pointerHandler);
-  sprite.on("pointertap", pointerHandler);
+  sprite.on('pointertap', pointerHandler);
 }
 
 class EventData {

@@ -23,7 +23,7 @@ export default class Logger {
   public isProduction: boolean;
   constructor(name: string) {
     this.name = name;
-    this.isProduction = process && process.env && process.env.NODE_ENV === "production";
+    this.isProduction = process && process.env && process.env.NODE_ENV === 'production';
   }
   public static create(name: string) {
     return new Logger(name);

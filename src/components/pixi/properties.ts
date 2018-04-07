@@ -18,11 +18,11 @@
  * limitations under the License.
  */
 
-import deepEqual from "deep-equal";
-import * as PIXI from "pixi.js";
-import core from "../../core/core";
+import deepEqual from 'deep-equal';
+import * as PIXI from 'pixi.js';
+import core from '../../core/core';
 
-const logger = core.getLogger("MountNode");
+const logger = core.getLogger('MountNode');
 
 /**
  * Convert pure array to proper Pixi Object, non-array will be returned as-is.
@@ -77,9 +77,9 @@ export function setValue(key: string, value: any, defaultValue: any) {
     } else {
       node[key] = defaultValue;
     }
-  } else if (key === "src") {
+  } else if (key === 'src') {
     node.src = core.getTexture(value);
-  } else if (["position", "pivot", "anchor", "rotation", "scale", "skew"].includes(key)) {
+  } else if (['position', 'pivot', 'anchor', 'rotation', 'scale', 'skew'].includes(key)) {
     node[key] = convertToPixiValue(value);
   } else {
     node[key] = value;
@@ -109,53 +109,53 @@ export function updateValue(key: string, prevValue: any, value: any) {
 export function mountNode(node: PIXI.DisplayObject, props: { [key: string]: any }) {
   const setNodeValue = setValue.bind(node);
 
-  setNodeValue("name", props.name);
-  setNodeValue("src", props.src);
+  setNodeValue('name', props.name);
+  setNodeValue('src', props.src);
 
-  setNodeValue("alpha", props.alpha);
-  setNodeValue("visible", props.visible);
-  setNodeValue("cacheAsBitmap", props.cacheAsBitmap);
-  setNodeValue("buttonMode", props.buttonMode);
+  setNodeValue('alpha', props.alpha);
+  setNodeValue('visible', props.visible);
+  setNodeValue('cacheAsBitmap', props.cacheAsBitmap);
+  setNodeValue('buttonMode', props.buttonMode);
 
-  setNodeValue("x", props.x);
-  setNodeValue("y", props.y);
-  setNodeValue("position", props.position);
+  setNodeValue('x', props.x);
+  setNodeValue('y', props.y);
+  setNodeValue('position', props.position);
 
-  setNodeValue("width", props.width);
-  setNodeValue("height", props.height);
+  setNodeValue('width', props.width);
+  setNodeValue('height', props.height);
 
-  setNodeValue("pivot", props.pivot);
-  setNodeValue("anchor", props.anchor);
+  setNodeValue('pivot', props.pivot);
+  setNodeValue('anchor', props.anchor);
 
-  setNodeValue("rotation", props.rotation);
-  setNodeValue("scale", props.scale);
-  setNodeValue("skew", props.skew);
-  setNodeValue("tint", props.tint);
+  setNodeValue('rotation', props.rotation);
+  setNodeValue('scale', props.scale);
+  setNodeValue('skew', props.skew);
+  setNodeValue('tint', props.tint);
 }
 
 export function updateNode(node: PIXI.DisplayObject, prevProps: { [key: string]: any }, props: { [key: string]: any }) {
   const updateNodeValue = updateValue.bind(node);
 
-  updateNodeValue("name", prevProps.name, props.name);
-  updateNodeValue("src", prevProps.src, props.src);
+  updateNodeValue('name', prevProps.name, props.name);
+  updateNodeValue('src', prevProps.src, props.src);
 
-  updateNodeValue("alpha", prevProps.alpha, props.alpha);
-  updateNodeValue("visible", prevProps.visible, props.visible);
-  updateNodeValue("cacheAsBitmap", prevProps.cacheAsBitmap, props.cacheAsBitmap);
-  updateNodeValue("buttonMode", prevProps.buttonMode, props.buttonMode);
+  updateNodeValue('alpha', prevProps.alpha, props.alpha);
+  updateNodeValue('visible', prevProps.visible, props.visible);
+  updateNodeValue('cacheAsBitmap', prevProps.cacheAsBitmap, props.cacheAsBitmap);
+  updateNodeValue('buttonMode', prevProps.buttonMode, props.buttonMode);
 
-  updateNodeValue("x", prevProps.x, props.x);
-  updateNodeValue("y", prevProps.y, props.y);
-  updateNodeValue("position", prevProps.position, props.position);
+  updateNodeValue('x', prevProps.x, props.x);
+  updateNodeValue('y', prevProps.y, props.y);
+  updateNodeValue('position', prevProps.position, props.position);
 
-  updateNodeValue("width", prevProps.width, props.width);
-  updateNodeValue("height", prevProps.height, props.height);
+  updateNodeValue('width', prevProps.width, props.width);
+  updateNodeValue('height', prevProps.height, props.height);
 
-  updateNodeValue("pivot", prevProps.pivot, props.pivot);
-  updateNodeValue("anchor", prevProps.anchor, props.anchor);
+  updateNodeValue('pivot', prevProps.pivot, props.pivot);
+  updateNodeValue('anchor', prevProps.anchor, props.anchor);
 
-  updateNodeValue("rotation", prevProps.rotation, props.rotation);
-  updateNodeValue("scale", prevProps.scale, props.scale);
-  updateNodeValue("skew", prevProps.skew, props.skew);
-  updateNodeValue("tint", prevProps.tint, props.tint);
+  updateNodeValue('rotation', prevProps.rotation, props.rotation);
+  updateNodeValue('scale', prevProps.scale, props.scale);
+  updateNodeValue('skew', prevProps.skew, props.skew);
+  updateNodeValue('tint', prevProps.tint, props.tint);
 }

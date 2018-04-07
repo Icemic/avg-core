@@ -1,4 +1,4 @@
-import core from "../core/core";
+import core from '../core/core';
 
 export default function createComponent(name: string, ...mixins: any[]): any {
   class ReactAVGComponent {
@@ -44,26 +44,26 @@ function wrapNodeLifeCycle(lifeCycle: { [key: string]: (...args: any[]) => any }
   if (lifeCycle.createNode) {
     ret.createNode = function() {
       createNode.call(this);
-      core.emit("createNode", this.node);
+      core.emit('createNode', this.node);
     };
   }
   if (lifeCycle.mountNode) {
     ret.mountNode = function(props) {
-      core.emit("mountNode", this.node, props);
+      core.emit('mountNode', this.node, props);
 
       return mountNode.call(this, props);
     };
   }
   if (lifeCycle.updateNode) {
     ret.updateNode = function(prevProps, props) {
-      core.emit("updateNode", this.node, prevProps, props);
+      core.emit('updateNode', this.node, prevProps, props);
 
       return updateNode.call(this, prevProps, props);
     };
   }
   if (lifeCycle.unmountNode) {
     ret.unmountNode = function() {
-      core.emit("unmountNode", this.node);
+      core.emit('unmountNode', this.node);
 
       return unmountNode.call(this);
     };

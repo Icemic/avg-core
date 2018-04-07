@@ -18,19 +18,19 @@
  * limitations under the License.
  */
 
-import * as PIXI from "pixi.js";
-import PropTypes from "prop-types";
-import React from "react";
-import ContainerMixin from "../components/ContainerMixin";
-import { ReactInstanceMap, ReactUpdates } from "./reactdom";
+import * as PIXI from 'pixi.js';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ContainerMixin from '../components/ContainerMixin';
+import { ReactInstanceMap, ReactUpdates } from './reactdom';
 
-import core from "../core/core";
+import core from '../core/core';
 
 /**
  * Surface is a standard React component and acts as the main drawing canvas.
  * ReactCanvas components cannot be rendered outside a Surface.
  */
-export default class Surface extends React.PureComponent {
+export default class Surface extends React.Component {
   // mixins: [ContainerMixin],
   public static propTypes = {
     children: PropTypes.any,

@@ -18,11 +18,22 @@
  * limitations under the License.
  */
 
-import * as PIXI from "pixi.js";
+import * as PIXI from 'pixi.js';
 
 export default function findPixiNode(ref: any) {
-  const instance = ref._reactInternalInstance;
-  const node = instance._renderedComponent.node || instance._mountImage;
+  let instance = ref._reactInternalInstance;
+  let node;
+  // avoid infinity loop
+  for (let i = 10; i > 0; i--) {
+    node = instance._renderedComponent.node || instance._mountImage;
+    if (node) {
+      break;
+    } else if (instance._renderedComponent)  {
+      instance = instance._renderedComponent;
+    } else {
+      break;
+    }
+  }
 
   if (node) {
     return node;

@@ -18,26 +18,26 @@
  * limitations under the License.
  */
 
-import Color from "color";
-import { EventEmitter } from "eventemitter3";
-import compose from "koa-compose";
+import Color from 'color';
+import { EventEmitter } from 'eventemitter3';
+import compose from 'koa-compose';
 // import FontFaceObserver from 'fontfaceobserver';
-import { render as renderReact } from "react-dom";
+import { render as renderReact } from 'react-dom';
 // import Container from '../classes/Container';
-import { attachToSprite } from "../classes/EventManager";
-import fitWindow from "../utils/fitWindow";
-import sayHello from "../utils/sayHello";
-import Logger from "./logger";
+import { attachToSprite } from '../classes/EventManager';
+import fitWindow from '../utils/fitWindow';
+import sayHello from '../utils/sayHello';
+import Logger from './logger';
 
-import { connect, define } from "./data";
-import { getTexture, init as preloaderInit, load as loadResources } from "./preloader";
-import Ticker from "./ticker";
+import { connect, define } from './data';
+import { getTexture, init as preloaderInit, load as loadResources } from './preloader';
+import Ticker from './ticker';
 
 // const PIXI = require('pixi.js');
-import * as PIXI from "pixi.js";
-const isMobile = require("ismobilejs");
+import * as PIXI from 'pixi.js';
+const isMobile = require('ismobilejs');
 
-const logger = Logger.create("Core");
+const logger = Logger.create('Core');
 
 export interface Options {
   // fontFamily?: string
@@ -56,7 +56,7 @@ export interface Options {
  * @memberof AVG
  */
 @connect({
-  to: "core",
+  to: 'core',
 })
 @define({
   model: {
@@ -227,9 +227,9 @@ export class Core extends EventEmitter {
     }
     const _options: Options = {
       fitWindow: false,
-      assetsPath: "/",
+      assetsPath: '/',
       tryWebp: false,
-      backgroundColor: "#ffffff",
+      backgroundColor: '#ffffff',
       ...options,
     };
 
@@ -266,7 +266,7 @@ export class Core extends EventEmitter {
     this.options = _options;
 
     if (_options.fitWindow) {
-      window.addEventListener("resize", () => {
+      window.addEventListener('resize', () => {
         fitWindow(this.renderer as PIXI.WebGLRenderer, window.innerWidth, window.innerHeight);
       });
       fitWindow(this.renderer as PIXI.WebGLRenderer, window.innerWidth, window.innerHeight);
@@ -274,8 +274,8 @@ export class Core extends EventEmitter {
 
     let assetsPath = _options.assetsPath;
 
-    if (!(assetsPath as string).endsWith("/")) {
-      assetsPath += "/";
+    if (!(assetsPath as string).endsWith('/')) {
+      assetsPath += '/';
     }
     this.assetsPath = assetsPath as string;
     preloaderInit(assetsPath as string, _options.tryWebp as boolean);
@@ -297,17 +297,17 @@ export class Core extends EventEmitter {
     if (this._init && this.renderer) {
       return this.renderer;
     }
-    logger.error("Renderer hasn't been initialed.");
+    logger.error('Renderer hasn\'t been initialed.');
 
-    throw new Error("Renderer hasn't been initialed.");
+    throw new Error('Renderer hasn\'t been initialed.');
   }
   public getStage() {
     if (this._init && this.stage) {
       return this.stage;
     }
-    logger.error("Stage hasn't been initialed.");
+    logger.error('Stage hasn\'t been initialed.');
 
-    throw new Error("Stage hasn't been initialed.");
+    throw new Error('Stage hasn\'t been initialed.');
   }
   public getAssetsPath() {
     return this.assetsPath;
@@ -344,7 +344,7 @@ export class Core extends EventEmitter {
    */
   public async render(component: React.Component, target: HTMLDocument, append = true) {
     if (!this._init) {
-      throw Error("not initialed");
+      throw Error('not initialed');
     }
 
     return new Promise((resolve) => {

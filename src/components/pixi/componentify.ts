@@ -18,13 +18,13 @@
  * limitations under the License.
  */
 
-import upperFirst from "lodash/upperFirst";
+import upperFirst from 'lodash/upperFirst';
 
-import React from "react";
-import ContainerMixin from "../ContainerMixin";
-import createComponent from "../createComponent";
-import NodeMixin from "../NodeMixin";
-import pixiPropTypes from "./propTypes";
+import React from 'react';
+import ContainerMixin from '../ContainerMixin';
+import createComponent from '../createComponent';
+import NodeMixin from '../NodeMixin';
+import pixiPropTypes from './propTypes';
 
 export default function componentify(name: string, lifeCycle: any, propTypes = {}): any {
   const compName = upperFirst(name);

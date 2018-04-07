@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-import * as PIXI from "pixi.js";
+import * as PIXI from 'pixi.js';
 
 interface TextureMap {
   [path: string]: PIXI.Texture;
@@ -28,32 +28,32 @@ let TEXTURES: TextureMap = {};
 const AUDIOS: any = {};
 const VIDEOS: any = {};
 // const SCRIPTS = {};
-let HOST = "/";
+let HOST = '/';
 let TRYWEBP = false;
 
-const isSafari = ((navigator.userAgent.indexOf("Safari") !== -1)
-  && (navigator.userAgent.indexOf("Chrome") === -1)
-  && navigator.userAgent.indexOf("Android") === -1)
-  || navigator.userAgent.indexOf("iPhone") !== -1
-  || navigator.userAgent.indexOf("iPad") !== -1;
+const isSafari = ((navigator.userAgent.indexOf('Safari') !== -1)
+  && (navigator.userAgent.indexOf('Chrome') === -1)
+  && navigator.userAgent.indexOf('Android') === -1)
+  || navigator.userAgent.indexOf('iPhone') !== -1
+  || navigator.userAgent.indexOf('iPad') !== -1;
 
 const Resource = PIXI.loaders.Loader.Resource;
 
-Resource.setExtensionLoadType("wav", Resource.LOAD_TYPE.AUDIO);
-Resource.setExtensionLoadType("mp3", Resource.LOAD_TYPE.AUDIO);
-Resource.setExtensionLoadType("ogg", Resource.LOAD_TYPE.AUDIO);
+Resource.setExtensionLoadType('wav', Resource.LOAD_TYPE.AUDIO);
+Resource.setExtensionLoadType('mp3', Resource.LOAD_TYPE.AUDIO);
+Resource.setExtensionLoadType('ogg', Resource.LOAD_TYPE.AUDIO);
 
-Resource.setExtensionLoadType("mp4", Resource.LOAD_TYPE.VIDEO);
-Resource.setExtensionLoadType("webm", Resource.LOAD_TYPE.VIDEO);
+Resource.setExtensionLoadType('mp4', Resource.LOAD_TYPE.VIDEO);
+Resource.setExtensionLoadType('webm', Resource.LOAD_TYPE.VIDEO);
 
-Resource.setExtensionXhrType("bkc", Resource.XHR_RESPONSE_TYPE.JSON);
-Resource.setExtensionXhrType("bks", Resource.XHR_RESPONSE_TYPE.TEXT);
+Resource.setExtensionXhrType('bkc', Resource.XHR_RESPONSE_TYPE.JSON);
+Resource.setExtensionXhrType('bks', Resource.XHR_RESPONSE_TYPE.TEXT);
 
-Resource.setExtensionXhrType("ttf", Resource.XHR_RESPONSE_TYPE.BUFFER);
-Resource.setExtensionXhrType("otf", Resource.XHR_RESPONSE_TYPE.BUFFER);
+Resource.setExtensionXhrType('ttf', Resource.XHR_RESPONSE_TYPE.BUFFER);
+Resource.setExtensionXhrType('otf', Resource.XHR_RESPONSE_TYPE.BUFFER);
 
 function changeExtension(filename: string, ext: string) {
-  const basename = filename.substr(0, filename.lastIndexOf("."));
+  const basename = filename.substr(0, filename.lastIndexOf('.'));
 
   return `${basename}.${ext}`;
 }
@@ -73,13 +73,13 @@ export function load(resources: string[], onProgress: (...args: any[]) => any) {
       if (isSafari || !TRYWEBP) {
         loader.add(res, res);
       } else {
-        loader.add(res, changeExtension(res, "webp"));
+        loader.add(res, changeExtension(res, 'webp'));
       }
     }
     const promise = new Promise((resolve, reject) => {
-      loader.once("complete", resolve);
-      loader.once("error", reject);
-      loader.on("progress", onProgress);
+      loader.once('complete', resolve);
+      loader.once('error', reject);
+      loader.on('progress', onProgress);
     });
 
     loader.load((self: PIXI.loaders.Loader, retResources: any) => {
@@ -106,13 +106,13 @@ export function load(resources: string[], onProgress: (...args: any[]) => any) {
   }
 }
 
-export function getTexture(url = "") {
+export function getTexture(url = '') {
   let obj = TEXTURES[url];
 
   if (!obj) {
-    if (url.startsWith("data:")
-      || url.startsWith("http:")
-      || url.startsWith("https:")) {
+    if (url.startsWith('data:')
+      || url.startsWith('http:')
+      || url.startsWith('https:')) {
       if (/\.(webm|mp4|mov)$/.test(url)) {
         obj = PIXI.Texture.fromVideoUrl(url);
       } else {
@@ -126,9 +126,9 @@ export function getTexture(url = "") {
         let _url;
 
         if (url) {
-          _url = (isSafari || !TRYWEBP) ? `${HOST}${url}` : changeExtension(`${HOST}${url}`, "webp");
+          _url = (isSafari || !TRYWEBP) ? `${HOST}${url}` : changeExtension(`${HOST}${url}`, 'webp');
         } else {
-          _url = "";
+          _url = '';
         }
         obj = PIXI.Texture.fromImage(_url);
       }
@@ -148,7 +148,7 @@ export function getAudio(url: string) {
   const audio = new Audio();
 
   audio.src = `${HOST}${url}`;
-  audio.preload = "auto";
+  audio.preload = 'auto';
   audio.load();
 
   return audio;

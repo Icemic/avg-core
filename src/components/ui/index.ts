@@ -18,10 +18,10 @@
  * limitations under the License.
  */
 
-import Button from "./Button";
-import Checkbox from "./Checkbox";
-import Dialog from "./Dialog";
-import Layout from "./Layout";
+import Button from './Button';
+import Checkbox from './Checkbox';
+import Dialog from './Dialog';
+import Layout from './Layout';
 
 export {
   Dialog,

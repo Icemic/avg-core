@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-import core from "../core/core";
+import core from '../core/core';
 
 export default function findPixiNodeByName(name: string, root: PIXI.Container | undefined): PIXI.DisplayObject | null {
   const stage = root || core.getStage() as PIXI.Container;

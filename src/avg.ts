@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-import "babel-polyfill";
+import 'babel-polyfill';
 
 /**
  * @namespace AVG
@@ -27,17 +27,17 @@ import "babel-polyfill";
 // import * as ui from './components/ui';
 // import * as plugins from './plugins';
 
-import { reaction } from "mobx";
-import { observer } from "mobx-react/custom";
-import { flow } from "mobx-state-tree";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import tools from "./components/componentUtils";
-import findPixiNode from "./components/findPixiNode";
-import findPixiNodeByName from "./components/findPixiNodeByName";
-import Surface from "./components/Surface";
-import core from "./core/core";
-import { connect, define, getEnv, stateTree } from "./core/data";
+import { reaction } from 'mobx';
+import { observer } from 'mobx-react/custom';
+import { flow } from 'mobx-state-tree';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import tools from './components/componentUtils';
+import findPixiNode from './components/findPixiNode';
+import findPixiNodeByName from './components/findPixiNodeByName';
+import Surface from './components/Surface';
+import core from './core/core';
+import { connect, define, getEnv, stateTree } from './core/data';
 
 export {
   React,
