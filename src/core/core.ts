@@ -58,7 +58,7 @@ export interface Options {
 @connect({
   to: 'core',
 })
-@define({
+@define('plugin', {
   model: {
     width: 1280,
     height: 720,

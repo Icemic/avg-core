@@ -1,20 +1,20 @@
-import { EventEmitter } from "eventemitter3";
-import { reaction } from "mobx";
-import { observer } from "mobx-react/custom";
-import { getEnv, IModelType, IStateTreeNode, onSnapshot, types } from "mobx-state-tree";
-import React, { ClassType, Component, ComponentClass } from "react";
-import Logger from "./logger";
+import { EventEmitter } from 'eventemitter3';
+import { reaction } from 'mobx';
+import { observer } from 'mobx-react/custom';
+import { getEnv, IModelType, IStateTreeNode, onSnapshot, types } from 'mobx-state-tree';
+import React, { ClassType, Component, ComponentClass } from 'react';
+import Logger from './logger';
 
 // hack
-declare module "mobx-react/custom" {
+declare module 'mobx-react/custom' {
   function observer(clazz: AVGDecoratorTarget): AVGDecoratorOutput;
 }
 
-const logger = Logger.create("State Tree");
+const logger = Logger.create('State Tree');
 
 export class StateTree extends EventEmitter {
-  public instanceMap: Map<string, object> = new Map<string, object>();
-  public append(name: string, instance: object) {
+  public instanceMap: Map<string, { [key: string]: any }> = new Map<string, { [key: string]: any }>();
+  public append(name: string, instance: { [key: string]: any }) {
     if (this.instanceMap.has(name)) {
       logger.warn(`State instance named '${name}' exists, and has been reset.`);
     }
@@ -27,108 +27,134 @@ export class StateTree extends EventEmitter {
 
 export const stateTree = new StateTree();
 
-export interface Model {
+export interface IModel {
   [key: string]: any;
 }
-export interface ModelDefault extends Model {
+export interface IModelDefault extends IModel {
 }
-export interface AVGFlags {
+export interface IAVGFlags {
+  displayName?: string;
   isAVGComponent?: boolean;
   isAVGFunctionalComponent?: boolean;
   isAVGPlugin?: boolean;
-  AVGModel: IModelType<Model, FunctionMap & Model>;
-  AVGModelDefault: ModelDefault;
+  AVGModel: IModelType<IModel, IFunctionMap & IModel>;
+  AVGModelDefault: IModelDefault;
   // AVGReactions: (self: object) => {},
-  AVGEvents: EventsObject;
+  AVGEvents: IEventsObject;
 }
-export interface AVGComponent extends React.ComponentClass, AVGFlags {
+export interface IAVGComponent extends React.ComponentClass, IAVGFlags {
   // [name: number]: (...args: any[]) => any
   // new (...args: any[]): any
   isAVGComponent: true;
   data: { [name: string]: any };
 }
-export interface AVGFunctionalComponent extends AVGFlags {
+export interface IAVGFunctionalComponent extends IAVGFlags {
   (properties: any, context: any, emit?: any): any;
   isAVGFunctionalComponent: true;
 }
-export interface AVGPlugin extends AVGFlags {
+export interface IAVGPlugin extends IAVGFlags {
   new (...args: any[]): any;
   isAVGPlugin: true;
 }
-export interface ReactionObject { [name: string]: { listener: () => any, handler: () => any }; }
-export type ReactionFunc = (self: Model, target: Model) => ReactionObject;
-export interface BindOptions {
+export interface IReactionObject { [name: string]: { listener: () => any, handler: () => any }; }
+export type ReactionFunc = (self: IModel, target: IModel) => IReactionObject;
+export interface IBindOptions {
   name: string;
   reactions: ReactionFunc;
 }
-export interface EventsObject {
+export interface IEventsObject {
   [key: string]: any;
 }
-export type HandlersList = HandlersObject[];
-export interface HandlersObject {
+export type HandlersList = IHandlersObject[];
+export interface IHandlersObject {
   eventName: string;
   handlers: Handler | Handler[];
 }
-export interface HandlerObject {
+export interface IHandlerObject {
   action: string;
   data: any;
 }
-export type Handler = (...args: any[]) => void | HandlerObject;
-export interface FunctionMap {
+export type Handler = (...args: any[]) => void | IHandlerObject;
+export interface IFunctionMap {
   [name: string]: (...args: any[]) => any;
 }
 export type Actions<F, K> = (self: IStateTreeNode & K) => F;
 export type Views<F, K> = (self: IStateTreeNode & K) => F;
 
-export type AVGDecoratorOutput = AVGComponent | AVGFunctionalComponent | AVGPlugin;
+export type AVGDecoratorOutput = IAVGComponent | IAVGFunctionalComponent | IAVGPlugin;
 export type AVGDecoratorTarget = ((...args: any[]) => React.ReactElement<any>) | (new (...args: any[]) => any) | React.ClassicComponentClass | React.ComponentClass | AVGDecoratorOutput;
 
-export function define<T extends Model, K extends IModelType<T, FunctionMap & T>>(options: {
+export function define<T extends IModel, K extends IModelType<T, IFunctionMap & T>>(
+  type: 'component' | 'plugin' = 'component',
+  options: {
     model?: T,
-    views?: Views<FunctionMap, T>,
-    actions?: Actions<FunctionMap, T>,
+    views?: Views<IFunctionMap, T>,
+    actions?: Actions<IFunctionMap, T>,
     // reactions?: (self: object) => {},
     events?: object,
-  } = {}) {
+  } = {},
+) {
 
-  const { model: schema = {} as Model, views = (() => ({})) as Views<FunctionMap, T>, actions = (() => ({})) as Actions<FunctionMap, T>, /*reactions = () => ({}), */events = {} } = options;
+  const {
+    model: schema = {} as IModel,
+    views = (() => ({})) as Views<IFunctionMap, T>,
+    actions = (() => ({})) as Actions<IFunctionMap, T>,
+    /*reactions = () => ({}), */
+    events = {},
+  } = options;
 
-  return function handleDescriptor<U>(_target: AVGDecoratorTarget & U, key?: string, descriptor?: PropertyDecorator): AVGDecoratorOutput & U {
+  return function handleDescriptor<U>(
+    _target: AVGDecoratorTarget & U,
+    key?: string,
+    descriptor?: PropertyDecorator,
+  ): AVGDecoratorOutput & U {
 
     let target;
-    let type = 0;
 
-    // React Component
-    if (_target instanceof React.Component && (_target as React.ComponentClass).prototype.isReactComponent) {
-      target = _target as AVGComponent;
-      type = 0;
-      target.isAVGComponent = true;
-    } else if (!isClass(_target)) {
-      target = _target as AVGFunctionalComponent;
-      type = 1;
-      target.isAVGFunctionalComponent = true;
+    if (type === 'component') {
+      if (/*_target instanceof React.Component && */(_target as React.ComponentClass).prototype.isReactComponent) {
+        target = _target as IAVGComponent;
+        target.isAVGComponent = true;
+      } else {
+        target = _target as IAVGFunctionalComponent;
+        target.isAVGFunctionalComponent = true;
+      }
     } else {
-      target = _target as AVGPlugin;
-      type = 2;
+      target = _target as IAVGPlugin;
       target.isAVGPlugin = true;
     }
+
+    // React Component
+    // if (_target instanceof React.Component && (_target as React.ComponentClass).prototype.isReactComponent) {
+    //   target = _target as IAVGComponent;
+    //   target.isAVGComponent = true;
+    // } else if (!(_target as any).isPlugin && !isClass(_target)) {
+    //   target = _target as IAVGFunctionalComponent;
+    //   target.isAVGFunctionalComponent = true;
+    // } else {
+    //   target = _target as IAVGPlugin;
+    //   target.isAVGPlugin = true;
+    // }
 
     // if (!DATATYPE[type]) {
     //   throw TypeError('[State Tree] Unrecognized type.');
     // }
 
-    const defualtValue: ModelDefault = Object.assign({}, schema);
+    const defualtValue: IModelDefault = Object.assign({}, schema);
 
     // convert [] or {} to types.frozen
     for (const name of Object.keys(schema)) {
       const item = schema[name];
 
-      if (typeof item === "object") {
+      if (typeof item === 'object') {
         schema[name] = types.frozen;
       }
     }
 
-    const model = types.model(schema).actions(actions as Actions<FunctionMap, Model>).views(views as Views<FunctionMap, Model>);
+    const model = types
+      .model(schema)
+      .actions(actions as Actions<IFunctionMap, IModel>)
+      .views(views as Views<IFunctionMap, IModel>);
 
     target.AVGModel = model;
     target.AVGModelDefault = defualtValue;
@@ -139,11 +165,20 @@ export function define<T extends Model, K extends IModelType<T, FunctionMap & T>
   };
 }
 
-export function connect(options: { to: string, bind?: Array<string | BindOptions>, handlers?: HandlersList, observe?: boolean }) {
+export function connect(
+  options: {
+    to: string, bind?: Array<string | IBindOptions>,
+    handlers?: HandlersList,
+    observe?: boolean,
+  }) {
 
   const { to, bind = [], handlers: handlersList = [], observe = true } = options;
 
-  return function handleDescriptor<T>(_target: AVGDecoratorTarget & T, key?: string, descriptor?: PropertyDecorator): AVGDecoratorOutput & T {
+  return function handleDescriptor<T>(
+    _target: AVGDecoratorTarget & T,
+    key?: string,
+    descriptor?: PropertyDecorator,
+  ): AVGDecoratorOutput & T {
 
     const target = _target as AVGDecoratorOutput;
 
@@ -152,7 +187,7 @@ export function connect(options: { to: string, bind?: Array<string | BindOptions
     // }
 
     if (!target.isAVGComponent && !target.isAVGPlugin && !target.isAVGFunctionalComponent) {
-      throw TypeError("[State Tree] Class is not a AVG Component or Plugin.");
+      throw TypeError('[State Tree] Class is not a AVG Component or Plugin.');
     }
 
     // data map injecting to component/plugin
@@ -162,7 +197,7 @@ export function connect(options: { to: string, bind?: Array<string | BindOptions
 
     type IType = typeof model.Type;
 
-    const instance: IType = model.create(target.AVGModelDefault || {} as Model, {
+    const instance: IType = model.create(target.AVGModelDefault || {} as IModel, {
       get component() {
         return componentInstance;
       },
@@ -173,26 +208,26 @@ export function connect(options: { to: string, bind?: Array<string | BindOptions
 
     if (target.isAVGComponent) {
       if (observe) {
-        return observer(getWrapped(/*dataMap, */target as AVGComponent, instance, bind, handlersList, (self) => {
+        return observer(getWrapped(/*dataMap, */target as IAVGComponent, instance, bind, handlersList, (self) => {
           componentInstance = self;
-        })) as AVGComponent & T;
+        })) as IAVGComponent & T;
       }
-      return getWrapped(/*dataMap, */target as AVGComponent, instance, bind, handlersList, (self) => {
+      return getWrapped(/*dataMap, */target as IAVGComponent, instance, bind, handlersList, (self) => {
         componentInstance = self;
-      }) as AVGComponent & T;
+      }) as IAVGComponent & T;
     } else if (target.isAVGPlugin) {
-      return getWrapped(/*dataMap, */target as AVGPlugin, instance, bind, handlersList, (self) => {
+      return getWrapped(/*dataMap, */target as IAVGPlugin, instance, bind, handlersList, (self) => {
         componentInstance = self;
-      }) as AVGPlugin & T;
+      }) as IAVGPlugin & T;
     } else if (target.isAVGFunctionalComponent) {
       const eventNames = Object.keys(target.AVGEvents);
       const emitFunc = genEmitFunction(eventNames, handlersList);
       return ((props, context) => {
         return target(props, context, emitFunc);
-      }) as AVGFunctionalComponent & T;
+      }) as IAVGFunctionalComponent & T;
     }
 
-    throw TypeError("[State Tree] Class is not a AVG Component or Plugin.");
+    throw TypeError('[State Tree] Class is not a AVG Component or Plugin.');
   };
 }
 
@@ -210,13 +245,13 @@ export function connect(options: { to: string, bind?: Array<string | BindOptions
 
 export { getEnv };
 
-function getWrapped(/*dataMap: { [key: string]: IModelType<Model, FunctionMap & Model> }, */target: AVGComponent | AVGPlugin, instance: any, bind: Array<string | BindOptions>, handlersList: HandlersList, injectSelf: (self: any) => void): AVGComponent | AVGPlugin {
+function getWrapped(/*dataMap: { [key: string]: IModelType<Model, FunctionMap & Model> }, */target: IAVGComponent | IAVGPlugin, instance: any, bind: Array<string | IBindOptions>, handlersList: HandlersList, injectSelf: (self: any) => void): IAVGComponent | IAVGPlugin {
 
   const eventNames = Object.keys(target.AVGEvents);
 
   const emitFunc = genEmitFunction(eventNames, handlersList);
 
-  class Wrapped extends (target as AVGComponent & AVGPlugin) {
+  class Wrapped extends (target as IAVGComponent & IAVGPlugin) {
     private _props: object;
     constructor(...args: any[]) {
       super(...args);
@@ -283,15 +318,15 @@ function functionGenerator(data: any): (...arg: any[]) => any {
   const argNames: string[] = [];
   for (const inputKey in inputs) {
     argNames.push(inputKey);
-    const [key, value] = inputs[inputKey].split(".");
+    const [key, value] = inputs[inputKey].split('.');
     values.push(() => {
       const instance = stateTree.getByName(key);
       if (instance) {
-        return (instance as Model)[value];
+        return (instance as IModel)[value];
       }
     });
   }
-  const func = new Function("evt", ...argNames, data.expression);
+  const func = new Function('evt', ...argNames, data.expression);
   return (evt) => func(evt, ...values.map((item) => item()));
 }
 
@@ -319,16 +354,16 @@ function genEmitFunction(eventNames: string[], handlersList: HandlersList) {
         const handlers = handlerList.handlers;
         if (handlers instanceof Array) {
           for (const handler of handlers) {
-            if (typeof handler === "function") {
+            if (typeof handler === 'function') {
               await handler(evt);
-            } else if (typeof handler === "object") {
-              const { action, data: _data } = handler as HandlerObject;
-              const [key, value] = action.split(".");
+            } else if (typeof handler === 'object') {
+              const { action, data: _data } = handler as IHandlerObject;
+              const [key, value] = action.split('.');
               const instance = stateTree.getByName(key);
               if (instance) {
                 const args = functionGenerator(_data)(evt);
                 if (!passed) {
-                  await (instance as Model)[value](args);
+                  await (instance as IModel)[value](args);
                 }
               }
             }
@@ -337,16 +372,16 @@ function genEmitFunction(eventNames: string[], handlersList: HandlersList) {
             }
             passed = false;
           }
-        } else if (typeof handlers === "function") {
+        } else if (typeof handlers === 'function') {
           await handlers(evt);
-        } else if (typeof handlers === "object") {
-          const { action, data: _data } = handlers as HandlerObject;
-          const [key, value] = action.split(".");
+        } else if (typeof handlers === 'object') {
+          const { action, data: _data } = handlers as IHandlerObject;
+          const [key, value] = action.split('.');
           const instance = stateTree.getByName(key);
           if (instance) {
             const args = functionGenerator(_data)(evt);
             if (!passed) {
-              await (instance as Model)[value](args);
+              await (instance as IModel)[value](args);
             }
           }
         }
@@ -360,9 +395,9 @@ function genEmitFunction(eventNames: string[], handlersList: HandlersList) {
 // https://stackoverflow.com/questions/29093396/how-do-you-check-the-difference-between-an-ecmascript-6-class-and-function
 // https://github.com/babel/babel/issues/5640
 function isClass(func: any): boolean {
-  return (typeof func === "function"
+  return (typeof func === 'function'
     && /^class\s|^.*classCallCheck\(/.test(Function.prototype.toString.call(func)))
-    || !((Object.getOwnPropertyDescriptor(func, "prototype") || {}).writable);
+    || !((Object.getOwnPropertyDescriptor(func, 'prototype') || {}).writable);
 }
 
 // reference:
