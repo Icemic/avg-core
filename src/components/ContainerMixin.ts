@@ -91,7 +91,7 @@ export default class ContainerMixin {
 function applyMixins(derivedCtor: any, baseCtors: any[]) {
   baseCtors.forEach((baseCtor) => {
       Object.getOwnPropertyNames(baseCtor).forEach((name) => {
-          derivedCtor.prototype[name] = baseCtor[name];
+          derivedCtor.prototype[name] = derivedCtor.prototype[name] || baseCtor[name];
       });
   });
 }
