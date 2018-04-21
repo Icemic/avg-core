@@ -123,6 +123,8 @@ export function mountNode(node: PIXI.DisplayObject, props: { [key: string]: any 
 
   setNodeValue('width', props.width);
   setNodeValue('height', props.height);
+  setNodeValue('width', props.size && props.size.length === 2 && props.size[0]);
+  setNodeValue('height', props.size && props.size.length === 2 && props.size[1]);
 
   setNodeValue('pivot', props.pivot);
   setNodeValue('anchor', props.anchor);
@@ -150,6 +152,10 @@ export function updateNode(node: PIXI.DisplayObject, prevProps: { [key: string]:
 
   updateNodeValue('width', prevProps.width, props.width);
   updateNodeValue('height', prevProps.height, props.height);
+  updateNodeValue('width', prevProps.size && prevProps.size.length === 2 && prevProps.size[0],
+    props.size && props.size.length === 2 && props.size[0]);
+  updateNodeValue('height', prevProps.size && prevProps.size.length === 2 && prevProps.size[1],
+    props.size && props.size.length === 2 && props.size[1]);
 
   updateNodeValue('pivot', prevProps.pivot, props.pivot);
   updateNodeValue('anchor', prevProps.anchor, props.anchor);
