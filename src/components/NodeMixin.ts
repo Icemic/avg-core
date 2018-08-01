@@ -18,7 +18,7 @@ const NodeMixin = {
 
     // bind event handlers
     attachToSprite(this.node);
-
+    this.node.__avg__ = true;
     // Avoid reset buttonMode value setting in `mountNode()`
     this.node.buttonMode = this.node.buttonMode || false;
     const keys = Object.keys(element.props);
