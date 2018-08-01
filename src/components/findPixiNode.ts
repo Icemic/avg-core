@@ -21,6 +21,9 @@
 import * as PIXI from 'pixi.js';
 
 export default function findPixiNode(ref: any) {
+  if (!ref || !ref._reactInternalInstance) {
+    return null;
+  }
   let instance = ref._reactInternalInstance;
   let node;
   // avoid infinity loop
