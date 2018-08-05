@@ -28,18 +28,18 @@ import pixiPropTypes from './propTypes';
 
 export default function componentify(name: string, lifeCycle: any, propTypes = {}): any {
   const compName = upperFirst(name);
-  const Raw = createComponent(`Raw${compName}`, ContainerMixin, NodeMixin, lifeCycle);
+  return createComponent(compName, ContainerMixin, NodeMixin, lifeCycle, { isReactComponent: true });
 
-  class Component extends React.PureComponent {
-    public static displayName = compName;
-    public static propTypes = {
-      ...pixiPropTypes,
-      ...propTypes,
-    };
-    public render() {
-      return React.createElement(Raw, this.props, this.props.children);
-    }
-  }
+  // class Component extends React.PureComponent {
+  //   public static displayName = compName;
+  //   public static propTypes = {
+  //     ...pixiPropTypes,
+  //     ...propTypes,
+  //   };
+  //   public render() {
+  //     return React.createElement(Raw, this.props, this.props.children);
+  //   }
+  // }
 
-  return Component;
+  // return Raw;
 }

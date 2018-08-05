@@ -21,10 +21,18 @@
 import * as PIXI from 'pixi.js';
 
 export default function findPixiNode(ref: any) {
-  if (!ref || !ref._reactInternalInstance) {
+  if (!ref) {
     return null;
   }
+  if (ref.__avg__) {
+    return ref;
+  }
   let instance = ref._reactInternalInstance;
+
+  if (!instance) {
+    return null;
+  }
+
   let node;
   // avoid infinity loop
   for (let i = 10; i > 0; i--) {
