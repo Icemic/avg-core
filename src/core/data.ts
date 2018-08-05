@@ -199,6 +199,10 @@ export function connect(
 
     const instance: IType = model.create(target.AVGModelDefault || {} as IModel, {
       get component() {
+        logger.warn('[deprecated] please modify `getEnv(self).component` to `getEnv(self).host`.');
+        return componentInstance;
+      },
+      get host() {
         return componentInstance;
       },
     });
