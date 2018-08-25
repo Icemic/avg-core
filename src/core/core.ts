@@ -29,7 +29,7 @@ import fitWindow from '../utils/fitWindow';
 import sayHello from '../utils/sayHello';
 import Logger from './logger';
 
-import { connect, define } from './data';
+import { action, connect, member } from './framework';
 import { getTexture, init as preloaderInit, load as loadResources } from './preloader';
 import Ticker from './ticker';
 
@@ -55,33 +55,7 @@ export interface Options {
  * @class
  * @memberof AVG
  */
-@connect({
-  to: 'core',
-})
-@define('plugin', {
-  model: {
-    width: 1280,
-    height: 720,
-    isAssetsLoading: false,
-    assetsLoadingProgress: 0,
-    clickEvent: {},
-  },
-  actions: (self) => ({
-    setScreenSize(width: number, height: number) {
-      self.width = width;
-      self.height = height;
-    },
-    setAssetsLoading(value: boolean) {
-      self.isAssetsLoading = value;
-    },
-    setAssetsLoadingProgress(value: number) {
-      self.assetsLoadingProgress = value;
-    },
-    setClickEvent(e: Event) {
-      self.clickEvent = e;
-    },
-  }),
-})
+@connect('plugin', 'core')
 export class Core extends EventEmitter {
   private _init: boolean;
   private _tickTime: number;
@@ -93,7 +67,12 @@ export class Core extends EventEmitter {
   private plugins: { [name: string]: object };
   private assetsPath: string | null;
   private ticker!: Ticker;
-  private data: any;
+
+  @member() public width: number = 1280;
+  @member() public height: number = 720;
+  @member() public isAssetsLoading: boolean = false;
+  @member() public assetsLoadingProgress: number = 0;
+  @member() public clickEvent: object = {};
   constructor() {
     super();
 
@@ -121,6 +100,27 @@ export class Core extends EventEmitter {
     this.plugins = {};
 
     this.assetsPath = null;
+  }
+
+  @action()
+  public setScreenSize(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+  }
+
+  @action()
+  public setAssetsLoading(value: boolean) {
+    this.isAssetsLoading = value;
+  }
+
+  @action()
+  public setAssetsLoadingProgress(value: number) {
+    this.assetsLoadingProgress = value;
+  }
+
+  @action()
+  public setClickEvent(e: Event) {
+    this.clickEvent = e;
   }
 
   /**
@@ -233,9 +233,7 @@ export class Core extends EventEmitter {
       ...options,
     };
 
-    const core = this.data;
-
-    core.setScreenSize(width, height);
+    this.setScreenSize(width, height);
 
     // if (_options.fontFamily) {
     //   const font = new FontFaceObserver(_options.fontFamily);
@@ -284,8 +282,8 @@ export class Core extends EventEmitter {
     attachToSprite(this.stage as PIXI.DisplayObject);
     // this.stage._ontap = e => this.post('tap', e);
     // this.stage._onclick = e => this.post('click', e);
-    (this.stage as any)._ontap = (e: Event) => core.setClickEvent(e);
-    (this.stage as any)._onclick = (e: Event) => core.setClickEvent(e);
+    (this.stage as any)._ontap = (e: Event) => this.setClickEvent(e);
+    (this.stage as any)._onclick = (e: Event) => this.setClickEvent(e);
 
     this.ticker = new Ticker();
     this.ticker.add(this.tick.bind(this));
@@ -328,10 +326,9 @@ export class Core extends EventEmitter {
 
   // TODO: move to actions
   public async loadAssets(list: string[]) {
-    const core = this.data;
-    core.setAssetsLoading(true);
-    await loadResources(list, (e: any) => core.setAssetsLoadingProgress(e.progress));
-    core.setAssetsLoading(false);
+    this.setAssetsLoading(true);
+    await loadResources(list, (e: any) => this.setAssetsLoadingProgress(e.progress));
+    this.setAssetsLoading(false);
   }
 
   /**

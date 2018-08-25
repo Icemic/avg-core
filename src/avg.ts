@@ -27,7 +27,6 @@ import 'babel-polyfill';
 // import * as ui from './components/ui';
 // import * as plugins from './plugins';
 
-import { reaction } from 'mobx';
 import { observer } from 'mobx-react/custom';
 import { flow } from 'mobx-state-tree';
 import PropTypes from 'prop-types';
@@ -37,7 +36,7 @@ import findPixiNode from './components/findPixiNode';
 import findPixiNodeByName from './components/findPixiNodeByName';
 import Surface from './components/Surface';
 import core from './core/core';
-import { connect, define, getEnv, stateTree } from './core/data';
+import { action, autorun, connect, globalStore, member, property, reaction, when } from './core/framework';
 
 export {
   React,
@@ -48,14 +47,21 @@ export {
   // components,
   // ui,
   // plugins,
-  stateTree,
+  // stateTree,
+  globalStore,
   findPixiNode,
   findPixiNodeByName,
-  define,
+  // define,
   connect,
-  getEnv,
+  action,
+  member,
+  property,
+  autorun,
+  when,
+  reaction,
+  // getEnv,
   tools,
   observer,
-  reaction,
-  flow,
+  // reaction,
+  // flow,
 };
