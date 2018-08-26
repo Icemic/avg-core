@@ -28,7 +28,7 @@ import pixiPropTypes from './propTypes';
 
 export default function componentify(name: string, lifeCycle: any, propTypes = {}): any {
   const compName = upperFirst(name);
-  return createComponent(compName, ContainerMixin, NodeMixin, lifeCycle, { isReactComponent: true });
+  return createComponent(compName, ContainerMixin, NodeMixin, lifeCycle);
 
   // class Component extends React.PureComponent {
   //   public static displayName = compName;

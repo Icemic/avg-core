@@ -309,8 +309,10 @@ export function connect(asType: 'plugin' | 'component', toName: string, handlerO
 
     if (asType === 'plugin') {
       return AVGTarget;
+    } else if ((Target as React.ComponentClass).prototype.isReactComponent) {
+      return observer(AVGTarget);
     }
-    return observer(AVGTarget);
+    return AVGTarget;
   };
 }
 
