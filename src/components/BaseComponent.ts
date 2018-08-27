@@ -44,6 +44,12 @@ export default class BaseComponent<P> {
       `There's only fake forceUpdate in Component '${name}' to fit type defination. DO NOT try to get or set it.`,
     );
   }
+  public render(): null {
+    const name = this.displayName;
+    throw new Error(
+      `There's only fake render in Component '${name}' to fit type defination. DO NOT try to get or set it.`,
+    );
+  }
 
   protected displayName = 'Unknown';
   constructor(element: React.ReactElement<P>) {
