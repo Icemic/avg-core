@@ -33,6 +33,19 @@ const GeneratorFunction = (function*(): any { /**/ }).constructor;
 // const AsyncGeneratorFunction = (async function* (): any {}).constructor;
 // const AsyncFunction = (async function () { }).constructor;
 
+// function isGeneratorFunction(value: any) {
+//   const constructor = value.constructor;
+//   if (!constructor) {
+//     return false;
+//   }
+//   if ('GeneratorFunction' === constructor.name ||
+//     'GeneratorFunction' === constructor.displayName ||
+//     value.toString().indexOf('return __generator') !== -1) {
+//     return true;
+//   }
+//   return false;
+// }
+
 export function member() {
   return (Target: any, key: string) => {
     let AVGModelDef: IAVGModelDefine[] = Target.AVGModelDef;
@@ -100,7 +113,7 @@ export function event(name: string) {
 //   }
 // }
 
-export function action() {
+export function action({ async } = { async: false }) {
   return function handleDescriptor(
     Target: any,
     key: string,
@@ -111,7 +124,10 @@ export function action() {
       AVGActionsDef = Target.AVGActionsDef = {};
     }
 
-    AVGActionsDef[key] = Target[key];
+    AVGActionsDef[key] = {
+      func: Target[key],
+      async,
+    };
 
     return {
       // ...descriptor,
@@ -252,8 +268,8 @@ export function connect(asType: 'plugin' | 'component', toName: string, handlerO
             case 'String': mstType = types.string; break;
             case 'Number': mstType = types.number; break;
             case 'Boolean': mstType = types.boolean; break;
-            case 'Object': mstType = types.frozen; break;
-            case 'Array': mstType = types.frozen; break;
+            case 'Object': mstType = types.frozen(); break;
+            case 'Array': mstType = types.frozen(); break;
             default: // console.error(`Unrecognized model type '${type}'`);
           }
           schema[name] = mstType;
@@ -276,9 +292,9 @@ export function connect(asType: 'plugin' | 'component', toName: string, handlerO
             const AVGActionsDef = Target.prototype.AVGActionsDef || {};
             const ret: typeof AVGActionsDef = {};
             for (const actionKey in AVGActionsDef) {
-              const bindedFunc = AVGActionsDef[actionKey].bind(this);
+              const bindedFunc = AVGActionsDef[actionKey].func.bind(this);
               let func = bindedFunc;
-              if (func.constructor === GeneratorFunction) {
+              if (func.constructor === GeneratorFunction || AVGActionsDef[actionKey].async) {
                 func = flow(bindedFunc);
               }
               ret[actionKey] = func;
