@@ -31,12 +31,13 @@ import { observer } from 'mobx-react/custom';
 import { flow } from 'mobx-state-tree';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import BaseComponent from './components/BaseComponent';
 import tools from './components/componentUtils';
 import findPixiNode from './components/findPixiNode';
 import findPixiNodeByName from './components/findPixiNodeByName';
 import Surface from './components/Surface';
 import core from './core/core';
-import { action, autorun, connect, globalStore, member, property, reaction, when } from './core/framework';
+import { action, autorun, connect, event, globalStore, member, property, reaction, when } from './core/framework';
 
 export {
   React,
@@ -44,6 +45,7 @@ export {
   PropTypes,
   core,
   Surface,
+  BaseComponent,
   // components,
   // ui,
   // plugins,
@@ -59,6 +61,7 @@ export {
   autorun,
   when,
   reaction,
+  event,
   // getEnv,
   tools,
   observer,
