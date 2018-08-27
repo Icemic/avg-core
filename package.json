@@ -34,10 +34,10 @@
     "ismobilejs": "^0.4.0",
     "koa-compose": "^3.2.1",
     "lodash": "^4.17.4",
-    "mobx": "^3.3.1",
-    "mobx-react": "^4.3.3",
+    "mobx": "^5.1.0",
+    "mobx-react": "^5.2.5",
     "mobx-react-router": "^3.1.2",
-    "mobx-state-tree": "^1.1.0",
+    "mobx-state-tree": "^3.2.3",
     "pixi-particles": "^2.1.1",
     "pixi-richtext": "^1.0.14",
     "pixi.js": "4.6.x",
@@ -87,7 +87,7 @@
     "tslint": "^5.9.1",
     "tslint-loader": "^3.6.0",
     "tslint-webpack-plugin": "^1.2.0",
-    "typescript": "^2.7.2",
+    "typescript": "^2.9.2",
     "webpack": "^3.6.0"
   }
 }
