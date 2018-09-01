@@ -53,7 +53,7 @@ const NodeMixin = {
   mountComponent(transaction: any, nativeParent: any, nativeContainerInfo: any, context: any) {
     const props = this._currentElement.props;
 
-    const layer = this.mountNode(props);
+    this.mountNode(props);
 
     const _transaction = ReactUpdates.ReactReconcileTransaction.getPooled();
 
@@ -66,7 +66,7 @@ const NodeMixin = {
     );
     ReactUpdates.ReactReconcileTransaction.release(_transaction);
 
-    return layer;
+    return this.node;
   },
 
   receiveComponent(nextComponent: any, transaction: any, context: any) {

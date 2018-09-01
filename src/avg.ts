@@ -23,16 +23,10 @@ import 'babel-polyfill';
 /**
  * @namespace AVG
  */
-// import * as components from './components';
-// import * as ui from './components/ui';
-// import * as plugins from './plugins';
 
 import { observer } from 'mobx-react/custom';
-import { flow } from 'mobx-state-tree';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import BaseComponent from './components/BaseComponent';
-import tools from './components/componentUtils';
+import BaseComponent, { IBaseProperties } from './components/BaseComponent';
 import findPixiNode from './components/findPixiNode';
 import findPixiNodeByName from './components/findPixiNodeByName';
 import Surface from './components/Surface';
@@ -42,18 +36,13 @@ import { action, autorun, connect, event, globalStore, member, property, reactio
 export {
   React,
   Component,
-  PropTypes,
   core,
   Surface,
   BaseComponent,
-  // components,
-  // ui,
-  // plugins,
-  // stateTree,
+  IBaseProperties,
   globalStore,
   findPixiNode,
   findPixiNodeByName,
-  // define,
   connect,
   action,
   member,
@@ -62,9 +51,5 @@ export {
   when,
   reaction,
   event,
-  // getEnv,
-  tools,
   observer,
-  // reaction,
-  // flow,
 };
