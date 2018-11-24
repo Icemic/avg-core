@@ -19,7 +19,7 @@
   "scripts": {
     "build": "NODE_ENV=production rollup -c rollup.config.ts",
     "start": "NODE_ENV=development rollup -c rollup.config.ts -w",
-    "prepack": "npm run dist",
+    "prepack": "npm run build",
     "test": "mocha --compilers js:babel-core/register",
     "lint": "tslint -t stylish 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}'",
     "lint-fix": "tslint -t stylish 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}' --fix",
