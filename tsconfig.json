@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es5",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "allowJs": false,
-    "jsx": "preserve",
+    "jsx": "react",
     "module": "esnext",
     "lib": [
       "dom", "es5", "es2015", "es6", "es7", "esnext"
@@ -13,9 +13,11 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
     "locale": "en",
     "declaration": true,
-    "noImplicitThis": false
+    "noImplicitThis": false,
+    "declarationDir": "dist/types"
   },
   "include": [
     "src/**/*"

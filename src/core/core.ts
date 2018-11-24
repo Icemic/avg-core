@@ -19,12 +19,12 @@
  */
 
 import Color from 'color';
-import { EventEmitter } from 'eventemitter3';
-import compose from 'koa-compose';
+import * as EventEmitter from 'eventemitter3';
 // import FontFaceObserver from 'fontfaceobserver';
 import { render as renderReact } from 'react-dom';
 // import Container from '../classes/Container';
 import { attachToSprite } from '../classes/EventManager';
+import { compose } from '../utils/compose';
 import fitWindow from '../utils/fitWindow';
 import sayHello from '../utils/sayHello';
 import Logger from './logger';

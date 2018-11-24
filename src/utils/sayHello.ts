@@ -8,15 +8,14 @@
  * @method sayHello
  */
 
-declare var VERSION: any;
-const RATE = Math.random().toFixed(6);
+declare var AVGVERSION: string;
 
 /* eslint-disable */
 export default function sayHello() {
 
   if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
     const args = [
-      `\n %c %c %c AVG.js ${RATE} - ✰ El Psy Congroo ✰  %c  %c  https://avgjs.org/  %c %c 🍞🍞🍞 \n\n`,
+      `\n %c %c %c AVG.js ${AVGVERSION} - ✰ Beta ✰  %c  %c  https://avgjs.org/  %c %c 🍞🍞🍞 \n\n`,
       'background: #EFCEA1; padding:5px 0;',
       'background: #EFCEA1; padding:5px 0;',
       'color: #EFCEA1; background: #794E3E; padding:5px 0;',
@@ -30,7 +29,7 @@ export default function sayHello() {
 
     window.console.log.apply(console, args);
   } else if (window.console) {
-    window.console.log(`AVG.js ${RATE} - El Psy Congroo - https://avgjs.org/`);
+    window.console.log(`AVG.js ${AVGVERSION} - https://avgjs.org/`);
   }
 
     // saidHello = true;

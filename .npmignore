@@ -1,5 +1,6 @@
 node_modules
 .vscode
+.rpt2_cache
 /build
 /docs
 .DS_Store
