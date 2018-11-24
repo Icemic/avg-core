@@ -4,7 +4,6 @@ import sourceMaps from 'rollup-plugin-sourcemaps';
 import typescript from 'rollup-plugin-typescript2';
 import replace from 'rollup-plugin-replace';
 import license from 'rollup-plugin-license';
-import clean from 'rollup-plugin-clean';
 
 const pkg = require('./package.json');
 
@@ -49,7 +48,6 @@ export default {
     include: 'src/**',
   },
   plugins: [
-    clean(),
     // Compile TypeScript files
     typescript({ useTsconfigDeclarationDir: true }),
     replace({
