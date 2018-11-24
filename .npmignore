@@ -3,3 +3,8 @@ node_modules
 /build
 /docs
 .DS_Store
+/src
+/test
+/tool
+*.config.ts
+.babelrc

@@ -19,11 +19,32 @@
   "scripts": {
     "dev": "NODE_ENV=development webpack --env.development --watch --progress --colors",
     "dist": "NODE_ENV=production webpack --env.release --progress --colors && webpack --env.release --env.minimize --progress --colors",
-    "prepublish": "npm run dist",
+    "prepack": "npm run dist",
     "test": "mocha --compilers js:babel-core/register",
-    "lint": "tslint -t stylish 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}' --fix"
+    "lint": "tslint -t stylish 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}'",
+    "lint-fix": "tslint -t stylish 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}' --fix",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "commit": "git-cz",
+    "semantic-release": "semantic-release",
+    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
+    "precommit": "lint-staged"
   },
   "license": "Apache-2.0",
+  "lint-staged": {
+    "{src,test}/**/*.ts": [
+      "npm run lint",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    },
+    "validate-commit-msg": {
+      "types": "conventional-commit-types",
+      "helpMessage": "Use \"npm run commit\" instead, we use conventional-changelog format :) (https://github.com/commitizen/cz-cli)"
+    }
+  },
   "dependencies": {
     "color": "^3.0.0",
     "deep-equal": "^1.0.1",
@@ -61,6 +82,8 @@
     "babel-polyfill": "^6.20.0",
     "babel-preset-env": "^1.7.0",
     "chai": "^3.5.0",
+    "commitizen": "^3.0.4",
+    "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.4.1",
     "eslint-config-react-app": "^2.0.1",
     "eslint-import-resolver-webpack": "^0.8.1",
@@ -69,14 +92,21 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
+    "git-cz": "^1.7.1",
+    "husky": "^1.2.0",
+    "lint-staged": "^8.1.0",
     "mocha": "^5.2.0",
     "react-dev-utils": "^4.2.1",
+    "semantic-release": "^15.12.1",
     "sinon": "^1.17.5",
     "ts-loader": "^3.2.0",
     "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.16.0",
+    "tslint-config-standard": "^8.0.1",
     "tslint-loader": "^3.6.0",
     "tslint-webpack-plugin": "^1.2.0",
     "typescript": "^2.9.2",
+    "validate-commit-msg": "^2.14.0",
     "webpack": "^3.6.0"
   }
 }

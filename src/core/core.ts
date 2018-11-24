@@ -191,6 +191,7 @@ export class Core extends EventEmitter {
    * @memberOf Core
    */
   public installPlugin(constructor: (new (...args: any[]) => any)) {
+    /* tslint:disable-next-line */
     new constructor(this);
   }
 

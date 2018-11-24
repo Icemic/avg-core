@@ -1,50 +1,9 @@
 {
   "extends": [
-    "tslint:recommended"
+    "tslint-config-standard",
+    "tslint-config-prettier"
   ],
   "rules": {
-    "quotemark": [true, "single", "jsx-double"],
-    "no-unused-expression": {
-      "severity": "warning"
-    },
-    "no-empty": {
-      "severity": "warning"
-    },
-    "no-var-requires": {
-      "severity": "warning"
-    },
-    "no-empty-interface": {
-      "severity": "warning"
-    },
-    "max-classes-per-file": {
-      "severity": "off"
-    },
-    "max-line-length": {
-      "options": [120],
-      "severity": "warning"
-    },
-    "object-literal-sort-keys": {
-      "severity": "off"
-    },
-    "member-ordering": {
-      "severity": "off"
-    },
-    "prefer-for-of": {
-      "severity": "off"
-    },
-    "forin": {
-      "severity": "off"
-    },
-    "interface-name": {
-      "severity": "warning"
-    },
-    "variable-name": {
-      "options": [
-        "ban-keywords",
-        "check-format",
-        "allow-pascal-case",
-        "allow-leading-underscore"
-      ]
-    }
+    "one-variable-per-declaration": [true, "ignore-for-loop"]
   }
 }
