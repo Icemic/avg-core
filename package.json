@@ -1,5 +1,5 @@
 {
-  "name": "avg-core",
+  "name": "@onetale/core",
   "version": "0.1.1",
   "description": "Develop Adventure Game (or ADV, Visual Novel, Galgame, etc.) on your own!",
   "keywords": [
