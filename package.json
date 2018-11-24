@@ -11,7 +11,7 @@
   ],
   "main": "dist/avg.umd.js",
   "module": "dist/avg.es5.js",
-  "broswer": "dist/avg.min.js",
+  "browser": "dist/avg.min.js",
   "typings": "dist/types/avg.d.ts",
   "files": [
     "dist"
