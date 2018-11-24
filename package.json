@@ -49,6 +49,8 @@
     }
   },
   "dependencies": {
+    "@types/react": "^15.6.20",
+    "@types/react-dom": "^15.5.8",
     "color": "^3.0.0",
     "deep-equal": "^1.0.1",
     "eventemitter3": "^3.1.0",
@@ -63,13 +65,10 @@
     "reflect-metadata": "^0.1.12"
   },
   "devDependencies": {
-    "@types/color": "^3.0.0",
     "@types/deep-equal": "^1.0.1",
     "@types/node": "^8.5.2",
     "@types/pixi.js": "4.6.x",
     "@types/prop-types": "^15.5.2",
-    "@types/react": "^15.6.20",
-    "@types/react-dom": "^15.5.8",
     "chai": "^3.5.0",
     "commitizen": "^3.0.4",
     "cz-conventional-changelog": "^2.1.0",
