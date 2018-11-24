@@ -29,6 +29,7 @@ export interface IClass {
 //   '[[emit]]': any;
 // }
 
+const CommonFunction = (function(): any { /**/ }).constructor;
 const GeneratorFunction = (function*(): any { /**/ }).constructor;
 // const AsyncGeneratorFunction = (async function* (): any {}).constructor;
 // const AsyncFunction = (async function () { }).constructor;
@@ -294,7 +295,7 @@ export function connect(asType: 'plugin' | 'component', toName: string, handlerO
             for (const actionKey in AVGActionsDef) {
               const bindedFunc = AVGActionsDef[actionKey].func.bind(this);
               let func = bindedFunc;
-              if (func.constructor === GeneratorFunction || AVGActionsDef[actionKey].async) {
+              if (/*(func.constructor !== CommonFunction && func.constructor === GeneratorFunction) || func.toString().indexOf('return __generator') > -1 || */AVGActionsDef[actionKey].async) {
                 func = flow(bindedFunc);
               }
               ret[actionKey] = func;

@@ -19,7 +19,7 @@
  */
 
 import Color from 'color';
-import * as EventEmitter from 'eventemitter3';
+import EventEmitter from 'eventemitter3';
 // import FontFaceObserver from 'fontfaceobserver';
 import { render as renderReact } from 'react-dom';
 // import Container from '../classes/Container';
@@ -35,7 +35,7 @@ import Ticker from './ticker';
 
 // const PIXI = require('pixi.js');
 import * as PIXI from 'pixi.js';
-const isMobile = require('ismobilejs');
+import isMobile from 'ismobilejs';
 
 const logger = Logger.create('Core');
 
@@ -103,9 +103,10 @@ export class Core extends EventEmitter {
   }
 
   @action()
-  public setScreenSize(width: number, height: number) {
+  public *setScreenSize(width: number, height: number) {
     this.width = width;
     this.height = height;
+    return 0;
   }
 
   @action()

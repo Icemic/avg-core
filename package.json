@@ -67,6 +67,7 @@
   "devDependencies": {
     "@types/color": "^3.0.0",
     "@types/deep-equal": "^1.0.1",
+    "@types/ismobilejs": "^0.4.1",
     "@types/node": "^8.5.2",
     "@types/pixi.js": "4.6.x",
     "@types/prop-types": "^15.5.2",
