@@ -19,7 +19,6 @@
  */
 
 import * as PIXI from 'pixi.js';
-import { MouseEvent } from 'react';
 
 export function attachToSprite(sprite: PIXI.DisplayObject) {
   sprite.interactive = true;
