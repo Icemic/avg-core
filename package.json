@@ -1,6 +1,6 @@
 {
   "name": "@onetale/core",
-  "version": "0.2.4",
+  "version": "0.2.3",
   "description": "Develop Adventure Game (or ADV, Visual Novel, Galgame, etc.) on your own!",
   "keywords": [
     "Game Engine",
@@ -65,6 +65,7 @@
     "reflect-metadata": "^0.1.12"
   },
   "devDependencies": {
+    "@types/color": "^3.0.0",
     "@types/deep-equal": "^1.0.1",
     "@types/node": "^8.5.2",
     "@types/pixi.js": "4.6.x",
