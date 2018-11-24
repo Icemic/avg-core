@@ -18,8 +18,6 @@
  * limitations under the License.
  */
 
-import 'babel-polyfill';
-
 /**
  * @namespace AVG
  */
