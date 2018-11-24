@@ -9,3 +9,4 @@ node_modules
 /tool
 *.config.ts
 .babelrc
+gulpfile.js

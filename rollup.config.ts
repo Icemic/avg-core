@@ -4,7 +4,7 @@ import sourceMaps from 'rollup-plugin-sourcemaps';
 import typescript from 'rollup-plugin-typescript2';
 import replace from 'rollup-plugin-replace';
 import license from 'rollup-plugin-license';
-import { uglify } from 'rollup-plugin-uglify';
+import clean from 'rollup-plugin-clean';
 
 const pkg = require('./package.json');
 
@@ -41,7 +41,7 @@ export default {
   input: `src/avg.ts`,
   output: [
     { file: pkg.main, name: 'AVG', format: 'umd', ...outputCommon },
-    // { file: pkg.module, format: 'es', ...outputCommon },
+    { file: pkg.module, format: 'es', ...outputCommon },
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: ['pixi.js'],
@@ -49,6 +49,7 @@ export default {
     include: 'src/**',
   },
   plugins: [
+    clean(),
     // Compile TypeScript files
     typescript({ useTsconfigDeclarationDir: true }),
     replace({
@@ -77,20 +78,6 @@ export default {
     // which external modules to include in the bundle
     // https://github.com/rollup/rollup-plugin-node-resolve#usage
     resolve(),
-
-    (process.env.NODE_ENV === 'production' && uglify({
-      sourcemap: true,
-      numWorkers: 4,
-      output: {
-        comments: function(node, comment) {
-          if (comment.type === "comment2") {
-            // multiline comment
-            return /@preserve|@license|@cc_on/i.test(comment.value) && !/@author[ ]{6}Icemic Jia/i.test(comment.value);
-          }
-          return false;
-        }
-      }
-    })),
 
     license({
       sourceMap: true,
