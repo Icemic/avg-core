@@ -49,7 +49,7 @@ module.exports = function (env) {
 
   return {
     cache: true,
-    entry: ['whatwg-fetch', './src/avg.ts'],
+    entry: ['./src/avg.ts'],
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: `avg${env.minimize ? '.min' : ''}.js`,
