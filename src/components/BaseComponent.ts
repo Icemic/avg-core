@@ -47,7 +47,7 @@ export interface IBaseProperties {
   };
   tint?: number | string;
 
-  children?: any[];
+  children?: any;
 }
 
 export default abstract class BaseComponent<Node extends PIXI.DisplayObject, P extends IBaseProperties> {
