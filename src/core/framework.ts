@@ -359,9 +359,10 @@ function genEmitFunction(eventNames: string[], handlerObjects: IHandlerObject[])
           const [key, value] = actionFullName.split('.');
           const instance = globalStore.get(key);
           if (instance) {
-            const funcArgs = functionGenerator(data)(evt);
+            const ret = {};
+            functionGenerator(data)(evt, ret);
             if (!passed) {
-              await (instance as IModel)[value](funcArgs);
+              await (instance as IModel)[value](ret, '$$ONETALE$$');
             }
           }
           if (terminated) {
@@ -389,6 +390,6 @@ function functionGenerator(data: any): (...arg: any[]) => any {
       }
     });
   }
-  const func = new Function('evt', ...argNames, data.expression);
-  return (evt) => func(evt, ...values.map((item) => item()));
+  const func = new Function('evt', 'ret', ...argNames, data.expression);
+  return (evt, ret) => func(evt, ret, ...values.map((item) => item()));
 }
